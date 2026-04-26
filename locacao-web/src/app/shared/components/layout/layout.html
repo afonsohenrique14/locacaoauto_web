@@ -1,0 +1,32 @@
+<div class="layout">
+  <p-toolbar class="layout-header">
+    <ng-template #start>
+      <p-button
+        icon="pi pi-bars"
+        [rounded]="true"
+        [text]="true"
+        (click)="sidebarVisible.set(!sidebarVisible())"
+      />
+      <span class="layout-logo">LocaçãoAuto</span>
+    </ng-template>
+    <ng-template #end>
+      <p-button
+        [icon]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"
+        [rounded]="true"
+        [text]="true"
+        (onClick)="toggleDarkMode()"
+      />
+      <p-button icon="pi pi-user" [rounded]="true" [text]="true" />
+    </ng-template>
+  </p-toolbar>
+
+  <div class="layout-body">
+    <aside class="layout-sidebar" [class.collapsed]="!sidebarVisible()">
+      <p-panelmenu [model]="menuItems" class="h-full" />
+    </aside>
+
+    <main class="layout-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>
