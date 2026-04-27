@@ -1,0 +1,18 @@
+.footer-card {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border-top: 1px solid var(--p-surface-200) !important;
+
+  .footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--p-text-muted-color);
+    font-size: 0.875rem;
+
+    .footer-links {
+      display: flex;
+      gap: 0.25rem;
+    }
+  }
+}

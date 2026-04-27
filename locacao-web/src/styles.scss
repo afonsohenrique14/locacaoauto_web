@@ -11,8 +11,8 @@
 html,
 body {
   height: 100%;
-  font-family: var(--p-font-family);
-  color: var(--p-text-color);
+  font-family: 'Inter', var(--p-font-family), sans-serif;
+  // color: var(--p-text-color);
   transition:
     background-color 0.25s ease,
     color 0.25s ease;

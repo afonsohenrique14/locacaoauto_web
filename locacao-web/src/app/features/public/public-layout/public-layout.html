@@ -1,0 +1,23 @@
+<div class="public-layout">
+  <p-toolbar class="public-navbar">
+    <ng-template #start>
+      <span class="public-navbar-logo">LocaçãoAuto</span>
+    </ng-template>
+
+    <ng-template #end>
+      <p-button label="Entrar" [text]="true" routerLink="/auth/login" />
+      <p-button label="Cadastrar" routerLink="/auth/register" />
+      <p-button
+        [icon]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"
+        [rounded]="true"
+        [text]="true"
+        (click)="toggleDarkMode()"
+      />
+    </ng-template>
+  </p-toolbar>
+
+  <main class="public-content">
+    <router-outlet />
+  </main>
+  <app-footer></app-footer>
+</div>

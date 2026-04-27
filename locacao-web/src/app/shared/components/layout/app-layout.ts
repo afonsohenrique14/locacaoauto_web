@@ -4,14 +4,15 @@ import { MenuItem } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { PanelMenu } from 'primeng/panelmenu';
 import { Toolbar } from 'primeng/toolbar';
+import { Footer } from '../footer/footer';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Toolbar, Button, PanelMenu],
-  templateUrl: './layout.html',
-  styleUrl: './layout.scss',
+  imports: [RouterOutlet, Toolbar, Button, PanelMenu, Footer],
+  templateUrl: './app-layout.html',
+  styleUrl: './app-layout.scss',
 })
-export class Layout {
+export class AppLayout {
   sidebarVisible = signal(true);
   isDarkMode = signal(false);
 

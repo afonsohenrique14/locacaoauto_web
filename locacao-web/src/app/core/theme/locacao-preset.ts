@@ -1,8 +1,10 @@
 import { definePreset } from '@primeuix/themes';
-import Aura from '@primeuix/themes/aura';
-import { layoutTokens } from '../../shared/components/layout/layout.tokens';
-export const LocacaoPreset = definePreset(Aura, {
+import Material from '@primeuix/themes/material';
+import { layoutTokens } from '../../shared/components/layout/app-layout.tokens';
+import { publicLayoutPreset } from '../../features/public/public-layout.tokens';
+export const LocacaoPreset = definePreset(Material, {
   semantic: {
+    fontFamily: "'Inter', sans-serif",
     primary: {
       50: '{blue.50}',
       100: '{blue.100}',
@@ -20,17 +22,17 @@ export const LocacaoPreset = definePreset(Aura, {
       light: {
         surface: {
           0: '#ffffff',
-          50: '{slate.50}',
-          100: '{slate.100}',
-          200: '{slate.200}',
-          300: '{slate.300}',
-          400: '{slate.400}',
-          500: '{slate.500}',
-          600: '{slate.600}',
-          700: '{slate.700}',
-          800: '{slate.800}',
-          900: '{slate.900}',
-          950: '{slate.950}',
+          50: '{gray.50}',
+          100: '{gray.100}',
+          200: '{gray.200}',
+          300: '{gray.300}',
+          400: '{gray.400}',
+          500: '{gray.500}',
+          600: '{gray.600}',
+          700: '{gray.700}',
+          800: '{gray.800}',
+          900: '{gray.900}',
+          950: '{gray.950}',
         },
         formField: {
           hoverBorderColor: '{primary.color}',
@@ -39,17 +41,17 @@ export const LocacaoPreset = definePreset(Aura, {
       dark: {
         surface: {
           0: '#ffffff',
-          50: '{zinc.50}',
-          100: '{zinc.100}',
-          200: '{zinc.200}',
-          300: '{zinc.300}',
-          400: '{zinc.400}',
-          500: '{zinc.500}',
-          600: '{zinc.600}',
-          700: '{zinc.700}',
-          800: '{zinc.800}',
-          900: '{zinc.900}',
-          950: '{zinc.950}',
+          50: '{gray.50}',
+          100: '{gray.100}',
+          200: '{gray.200}',
+          300: '{gray.300}',
+          400: '{gray.400}',
+          500: '{gray.500}',
+          600: '{gray.600}',
+          700: '{gray.700}',
+          800: '{gray.800}',
+          900: '{gray.800}', // não existe — usa zinc
+          950: '{gray.800}', // menos escuro que stone.950
         },
         formField: {
           hoverBorderColor: '{primary.color}',
@@ -58,6 +60,7 @@ export const LocacaoPreset = definePreset(Aura, {
     },
   },
   components: {
-    ...layoutTokens,
+    ...layoutTokens.components,
+    ...publicLayoutPreset.components,
   },
 });

@@ -1,1 +1,87 @@
-<p>home works!</p>
+<div class="home">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="hero-badge">
+        <i class="pi pi-star-fill"></i>
+        Plataforma completa para locadoras
+      </span>
+      <h1 class="hero-title">
+        Gerencie sua frota com
+        <span class="hero-title-highlight">simplicidade</span>
+      </h1>
+      <p class="hero-subtitle">
+        Conectamos locadores e motoristas de aplicativo em uma plataforma moderna, segura e fácil de
+        usar. Do cadastro do veículo ao controle financeiro, tudo em um só lugar.
+      </p>
+      <div class="hero-actions">
+        <p-button
+          label="Começar agora"
+          icon="pi pi-arrow-right"
+          iconPos="right"
+          size="large"
+          routerLink="/auth/register"
+        />
+        <p-button
+          label="Saiba mais"
+          [text]="true"
+          [plain]="true"
+          size="large"
+          icon="pi pi-play-circle"
+        />
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="hero-image-card">
+        <i class="pi pi-car hero-car-icon"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <div class="features-header">
+      <h2 class="features-title">Tudo que você precisa</h2>
+      <p class="features-subtitle">Uma plataforma pensada para quem loca e para quem aluga.</p>
+    </div>
+    <div class="features-grid">
+      @for (feature of features; track feature.title) {
+        <p-card class="feature-card">
+          <ng-template #content>
+            <div class="feature-icon">
+              <i [class]="feature.icon"></i>
+            </div>
+            <h3 class="feature-title">{{ feature.title }}</h3>
+            <p class="feature-description">{{ feature.description }}</p>
+          </ng-template>
+        </p-card>
+      }
+    </div>
+  </section>
+
+  <!-- CTA Final -->
+  <section class="cta">
+    <p-card class="cta-card">
+      <ng-template #content>
+        <h2 class="cta-title">Pronto para começar?</h2>
+        <p class="cta-subtitle">
+          Crie sua conta gratuitamente e comece a gerenciar sua frota hoje mesmo.
+        </p>
+        <div class="cta-actions">
+          <p-button
+            label="Criar conta gratuita"
+            icon="pi pi-user-plus"
+            size="large"
+            routerLink="/auth/register"
+          />
+          <p-button
+            label="Já tenho uma conta"
+            [outlined]="true"
+            size="large"
+            routerLink="/auth/login"
+          />
+        </div>
+      </ng-template>
+    </p-card>
+  </section>
+</div>

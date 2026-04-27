@@ -1,0 +1,32 @@
+.public-layout {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+
+  .public-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    width: 100%;
+    padding: 0.75rem 2rem;
+
+    .public-navbar-logo {
+      font-size: 1.125rem;
+      font-weight: 700;
+      // color: var(--p-primary-color);
+      letter-spacing: -0.02em;
+    }
+  }
+
+  .public-content {
+    flex: 1;
+  }
+
+  .public-footer {
+    padding: 1.5rem 2rem;
+    border-top: 1px solid var(--p-surface-200);
+    text-align: center;
+    color: var(--p-text-muted-color);
+    font-size: 0.875rem;
+  }
+}
