@@ -3,38 +3,27 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
-import { Divider } from 'primeng/divider';
 import { FloatLabel } from 'primeng/floatlabel';
 import { Password } from 'primeng/password';
 import { AuthPanel } from '../../../shared/components/auth-panel/auth-panel';
 
 @Component({
-  selector: 'app-register',
-  imports: [
-    Card,
-    FloatLabel,
-    ReactiveFormsModule,
-    Password,
-    Divider,
-    Button,
-    RouterLink,
-    AuthPanel,
-  ],
-  templateUrl: './register.html',
-  styleUrl: './register.scss',
+  selector: 'app-login',
+  imports: [Card, ReactiveFormsModule, FloatLabel, Button, Password, RouterLink, AuthPanel],
+  templateUrl: './login.html',
+  styleUrl: './login.scss',
 })
-export class Register {
+export class Login {
   rf = inject(FormBuilder);
 
-  registerForm = this.rf.group({
+  loginForm = this.rf.group({
     email: ['', Validators.required, Validators.email],
     password: ['', Validators.required, Validators.minLength(8)],
-    confirmPassword: ['', Validators.required],
   });
 
   onSubmit() {
     console.log({
-      ...this.registerForm.value,
+      ...this.loginForm.value,
     });
   }
 }

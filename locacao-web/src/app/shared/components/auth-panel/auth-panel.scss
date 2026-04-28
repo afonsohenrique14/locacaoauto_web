@@ -1,0 +1,42 @@
+.auth-panel {
+  border-radius: 0 var(--p-content-border-radius) var(--p-content-border-radius) 0;
+  background: linear-gradient(135deg, var(--p-primary-600), var(--p-primary-800));
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+  color: white;
+  height: 100%;
+
+  .auth-panel-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .auth-panel-headline {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .auth-panel-features {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .auth-panel-feature {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.9rem;
+      opacity: 0.9;
+
+      i {
+        font-size: 1.25rem;
+      }
+    }
+  }
+}

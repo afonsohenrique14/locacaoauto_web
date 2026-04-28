@@ -1,5 +1,66 @@
 <div class="register">
-  <p-card>
-    <ng-template></ng-template>
+  <p-card class="register-card">
+    <ng-template #content>
+      <div class="register-panel">
+        <div class="register-left">
+          <div class="register-header">
+            <span class="register-logo">LocaçãoAuto</span>
+            <h2 class="register-title">Criar conta</h2>
+            <p class="register-subtitle">
+              Já tem uma conta?
+              <a routerLink="/auth/login" class="register-link">Entrar</a>
+            </p>
+          </div>
+
+          <form [formGroup]="registerForm" class="register-form">
+            <p-float-label variant="on">
+              <input pInputText id="email" formControlName="email" />
+              <label for="email">Email</label>
+            </p-float-label>
+
+            <p-float-label variant="on">
+              <p-password
+                id="password"
+                formControlName="password"
+                [toggleMask]="true"
+                [feedback]="true"
+                autocomplete="off"
+              >
+                <ng-template #footer>
+                  <p-divider />
+                  <ul class="password-rules">
+                    <li>Ao menos uma letra minúscula</li>
+                    <li>Ao menos uma letra maiúscula</li>
+                    <li>Ao menos um número</li>
+                    <li>Mínimo 8 caracteres</li>
+                  </ul>
+                </ng-template>
+              </p-password>
+              <label for="password">Senha</label>
+            </p-float-label>
+
+            <p-float-label variant="on">
+              <p-password
+                id="confirmPassword"
+                formControlName="confirmPassword"
+                [toggleMask]="true"
+                [feedback]="false"
+                autocomplete="off"
+              />
+              <label for="confirmPassword">Confirmar senha</label>
+            </p-float-label>
+
+            <p-button
+              label="Criar conta"
+              icon="pi pi-user-plus"
+              [fluid]="true"
+              (click)="onSubmit()"
+            />
+          </form>
+        </div>
+
+        <app-auth-panel />
+      </div>
+    </ng-template>
   </p-card>
 </div>

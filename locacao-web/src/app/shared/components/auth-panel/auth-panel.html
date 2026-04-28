@@ -1,0 +1,12 @@
+<div class="auth-panel">
+  <span class="auth-panel-brand">LocaçãoAuto</span>
+  <h2 class="auth-panel-headline">Gerencie sua frota com simplicidade</h2>
+  <div class="auth-panel-features">
+    @for (feature of features; track feature.icon) {
+      <div class="auth-panel-feature">
+        <i [class]="feature.icon"></i>
+        <span>{{ feature.text }}</span>
+      </div>
+    }
+  </div>
+</div>

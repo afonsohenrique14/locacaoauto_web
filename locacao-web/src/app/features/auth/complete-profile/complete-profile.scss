@@ -1,0 +1,196 @@
+.complete-profile {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1rem;
+
+  .complete-profile-card {
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  .complete-profile-header {
+    padding: 1.5rem 1.5rem 0;
+    text-align: center;
+
+    .complete-profile-logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--p-primary-color);
+      letter-spacing: -0.02em;
+    }
+
+    .complete-profile-title {
+      margin-top: 0.75rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--p-text-color);
+    }
+
+    .complete-profile-subtitle {
+      margin-top: 0.25rem;
+      color: var(--p-text-muted-color);
+      font-size: 0.875rem;
+    }
+  }
+}
+
+.complete-profile-stepper {
+  .p-stepper-list {
+    overflow: visible !important;
+  }
+  .p-step {
+    flex: 1;
+    white-space: nowrap;
+  }
+}
+
+.step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem 0;
+
+  .step-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--p-text-color);
+  }
+}
+
+.step-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+::ng-deep .step-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  width: 100%;
+
+  > p-float-label {
+    width: 100%;
+    display: block;
+  }
+
+  input[pInputText] {
+    width: 100%;
+    height: 3rem;
+  }
+
+  .form-row,
+  .form-row-dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+
+    p-float-label {
+      width: 100%;
+      display: block;
+    }
+    input[pInputText] {
+      width: 100%;
+      height: 3rem;
+    }
+
+    p-date-picker {
+      width: 100%;
+      display: flex;
+      input {
+        width: 100%;
+        height: 3rem;
+      }
+    }
+
+    p-select {
+      width: 100%;
+      display: block;
+      .p-select {
+        width: 100%;
+        height: 3rem;
+      }
+    }
+  }
+}
+
+.person-type-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+
+  .person-type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    border: 2px solid var(--p-surface-200);
+    border-radius: var(--p-content-border-radius);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+
+    &:hover {
+      border-color: var(--p-primary-300);
+      background-color: var(--p-primary-50);
+    }
+
+    &.selected {
+      border-color: var(--p-primary-color);
+      background-color: var(--p-primary-50);
+    }
+
+    .person-type-icon {
+      font-size: 2rem;
+      color: var(--p-primary-color);
+    }
+    .person-type-label {
+      font-weight: 600;
+      color: var(--p-text-color);
+    }
+    .person-type-desc {
+      font-size: 0.8rem;
+      color: var(--p-text-muted-color);
+    }
+  }
+}
+
+.confirmation {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  .confirmation-section {
+    h4 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--p-text-muted-color);
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    p {
+      color: var(--p-text-color);
+      line-height: 1.6;
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .complete-profile {
+    padding: 1rem;
+  }
+  .person-type-grid {
+    grid-template-columns: 1fr;
+  }
+
+  ::ng-deep .step-form {
+    .form-row,
+    .form-row-dates {
+      grid-template-columns: 1fr;
+    }
+  }
+}
