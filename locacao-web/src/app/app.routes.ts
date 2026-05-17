@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { AppLayout } from './shared/components/layout/app-layout';
 import { PublicLayout } from './features/public/public-layout/public-layout';
+import { publicGuard } from './core/guards/public-guard';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   {
@@ -13,10 +15,12 @@ export const routes: Routes = [
       },
       {
         path: 'auth/register',
+        canActivate: [publicGuard],
         loadComponent: () => import('./features/auth/register/register').then((m) => m.Register),
       },
       {
         path: 'auth/login',
+        canActivate: [publicGuard],
         loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
       },
     ],
@@ -24,6 +28,7 @@ export const routes: Routes = [
   {
     path: 'app',
     component: AppLayout,
+    canActivate: [authGuard],
     children: [
       {
         path: 'complete-profile',
@@ -34,4 +39,8 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ];

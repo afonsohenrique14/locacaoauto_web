@@ -8,6 +8,7 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { Password } from 'primeng/password';
 import { AuthPanel } from '../../../shared/components/auth-panel/auth-panel';
 import { AuthService } from '../../../core/services/auth';
+import { NotificationService } from '../../../core/services/notification';
 
 @Component({
   selector: 'app-register',
@@ -28,6 +29,7 @@ export class Register {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private notification = inject(NotificationService);
 
   registerForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -42,16 +44,18 @@ export class Register {
 
     if (password !== confirmPassword) {
       this.registerForm.get('confirmPassword')?.setErrors({ mismatch: true });
+      this.notification.error('As senhas não coincidem.');
       return;
     }
 
         this.authService.register(email!, password!).subscribe(
           {
             next: (user) =>{
+              this.notification.setPending('success', 'Sucesso', 'Registro bem-sucedido! Bem-vindo ao Gerenciador de Locação.');
               this.router.navigate(['/app']);
             },
             error: (err) => {
-              console.error('Registration failed', err);
+               this.notification.error(err.error || 'Erro ao criar conta. Tente novamente.');
               // Here you can also set form errors based on the response
             }
           }

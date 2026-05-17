@@ -7,6 +7,7 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { Password } from 'primeng/password';
 import { AuthPanel } from '../../../shared/components/auth-panel/auth-panel';
 import { AuthService } from '../../../core/services/auth';
+import { NotificationService } from '../../../core/services/notification';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ export class Login {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private notification = inject(NotificationService);
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -32,11 +34,11 @@ export class Login {
       this.authService.login(email!, password!).subscribe(
         {
           next: (user) =>{
+            this.notification.setPending('success', 'Sucesso', 'Bem-vindo de volta!');
             this.router.navigate(['/app']);
           },
           error: (err) => {
-            console.error('Login failed', err);
-            // Here you can also set form errors based on the response
+            this.notification.error(err.error || 'Erro ao fazer login. Tente novamente.');
           }
         }
       )

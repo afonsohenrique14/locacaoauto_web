@@ -1,24 +1,35 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { Button } from 'primeng/button';
 import { PanelMenu } from 'primeng/panelmenu';
 import { Toolbar } from 'primeng/toolbar';
 import { Footer } from '../footer/footer';
+import { Toast } from 'primeng/toast';
+import { NotificationService } from '../../../core/services/notification';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Toolbar, Button, PanelMenu, Footer],
+  imports: [RouterOutlet, Toolbar, Button, PanelMenu, Footer, Toast],
   templateUrl: './app-layout.html',
   styleUrl: './app-layout.scss',
 })
 export class AppLayout {
+
+  private notification = inject(NotificationService);
   sidebarVisible = signal(true);
   isDarkMode = signal(false);
 
   toggleDarkMode() {
     this.isDarkMode.set(!this.isDarkMode());
     document.querySelector('html')?.classList.toggle('dark-mode');
+  }
+
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.notification.flushPending();
+    }, 100);
   }
 
   menuItems: MenuItem[] = [
