@@ -4,9 +4,12 @@ import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { DatePicker } from 'primeng/datepicker';
 import { FloatLabel } from 'primeng/floatlabel';
+import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { Step, StepList, StepPanel, StepPanels, Stepper } from 'primeng/stepper';
-
+import { AddressService } from '../../../core/services/address';
+import {Address} from '../../../core//models/address.model'
+import { NotificationService } from '../../../core/services/notification';
 @Component({
   selector: 'app-complete-profile',
   imports: [
@@ -19,6 +22,7 @@ import { Step, StepList, StepPanel, StepPanels, Stepper } from 'primeng/stepper'
     Button,
     ReactiveFormsModule,
     FloatLabel,
+    InputText,
     DatePicker,
     Select,
   ],
@@ -38,11 +42,29 @@ export class CompleteProfile {
     { label: 'E', value: 'E' },
   ];
 
-  fb = inject(FormBuilder);
+  private fb = inject(FormBuilder);
+  private addressService = inject(AddressService);
+  private notification = inject(NotificationService)
+
+
+  nextStep() {
+    this.activeStep.update((s) => s + 1);
+  }
+  prevStep() {
+    this.activeStep.update((s) => s - 1);
+  }
+
+  onStepChange(value: number | undefined) {
+    if (value) this.activeStep.set(value);
+  }
 
   stepOneForm = this.fb.group({
     personType: ['individual', Validators.required],
   });
+
+  selectPersonType(type: 'individual' | 'legal') {
+    this.personType.set(type);
+  }
 
   stepTwoForm = this.fb.group({
     name: ['', Validators.required],
@@ -70,20 +92,51 @@ export class CompleteProfile {
     state: ['', Validators.required],
   });
 
-  selectPersonType(type: 'individual' | 'legal') {
-    this.personType.set(type);
+  ngOnInit() {
+    this.stepThreeForm.get('zipCode')?.valueChanges.subscribe(() => {
+      this.resetAddressFields();
+    });
   }
 
-  nextStep() {
-    this.activeStep.update((s) => s + 1);
-  }
-  prevStep() {
-    this.activeStep.update((s) => s - 1);
+  onFillZipCode(){
+
+    const zipCode = this.stepThreeForm.value.zipCode?.valueOf()
+    if(!zipCode) {return
+    }
+    this.addressService.FindAddress(zipCode).subscribe(
+      {
+      next: (address) =>{
+         this.stepThreeForm.patchValue({
+          street: address.street,
+          number: address.number,
+          complement: address.complement,
+          neighborhood: address.district,
+          city: address.city,
+          state: address.state
+
+         })
+
+        if (address.street) this.stepThreeForm.get('street')?.disable();
+        if (address.district) this.stepThreeForm.get('neighborhood')?.disable();
+        if (address.city) this.stepThreeForm.get('city')?.disable();
+        if (address.state) this.stepThreeForm.get('state')?.disable();
+
+      },
+      error: (err) => {
+        this.notification.error(err.error || 'CEP não encontrado.');
+      }
+    });
   }
 
-  onStepChange(value: number | undefined) {
-    if (value) this.activeStep.set(value);
+  private resetAddressFields() {
+    const fields = ['street', 'neighborhood', 'city', 'state'];
+
+    fields.forEach(field => {
+      this.stepThreeForm.get(field)?.enable();
+      this.stepThreeForm.get(field)?.reset();
+    });
   }
+
   onSubmit() {
     console.log({
       type: this.personType(),

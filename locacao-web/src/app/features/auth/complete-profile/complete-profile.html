@@ -85,6 +85,8 @@
                           id="birthDate"
                           formControlName="birthDate"
                           [showIcon]="true"
+                          dateFormat="dd/mm/yy"
+                          lang="pt-br"
                         />
                         <label for="birthDate">Data de nascimento</label>
                       </p-float-label>
@@ -111,6 +113,7 @@
                           id="licenseExpiry"
                           formControlName="licenseExpiry"
                           [showIcon]="true"
+                          dateFormat="dd/mm/yy"
                         />
                         <label for="licenseExpiry">Validade da CNH</label>
                       </p-float-label>
@@ -152,13 +155,33 @@
                 <h3 class="step-title">Seu endereço</h3>
                 <form [formGroup]="stepThreeForm" class="step-form">
                   <p-float-label variant="on">
-                    <input pInputText id="zipCode" formControlName="zipCode" />
+                    <input
+                      pInputText id="zipCode"
+                      formControlName="zipCode"
+                      (blur)="onFillZipCode()"
+                      />
                     <label for="zipCode">CEP</label>
                   </p-float-label>
+                  <div class="form-row">
+                    <p-float-label variant="on">
+                      <input pInputText id="state" formControlName="state" />
+                      <label for="state">Estado</label>
+                    </p-float-label>
+                    <p-float-label variant="on">
+                      <input pInputText id="city" formControlName="city" />
+                      <label for="city">Cidade</label>
+                    </p-float-label>
+                  </div>
                   <p-float-label variant="on">
                     <input pInputText id="street" formControlName="street" />
                     <label for="street">Rua</label>
                   </p-float-label>
+
+                  <p-float-label variant="on">
+                    <input pInputText id="neighborhood" formControlName="neighborhood" />
+                    <label for="neighborhood">Bairro</label>
+                  </p-float-label>
+
                   <div class="form-row">
                     <p-float-label variant="on">
                       <input pInputText id="number" formControlName="number" />
@@ -167,20 +190,6 @@
                     <p-float-label variant="on">
                       <input pInputText id="complement" formControlName="complement" />
                       <label for="complement">Complemento</label>
-                    </p-float-label>
-                  </div>
-                  <p-float-label variant="on">
-                    <input pInputText id="neighborhood" formControlName="neighborhood" />
-                    <label for="neighborhood">Bairro</label>
-                  </p-float-label>
-                  <div class="form-row">
-                    <p-float-label variant="on">
-                      <input pInputText id="city" formControlName="city" />
-                      <label for="city">Cidade</label>
-                    </p-float-label>
-                    <p-float-label variant="on">
-                      <input pInputText id="state" formControlName="state" />
-                      <label for="state">Estado</label>
                     </p-float-label>
                   </div>
                 </form>

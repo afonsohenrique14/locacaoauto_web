@@ -3,14 +3,15 @@ import { provideRouter } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import { LocacaoPreset } from './core/theme/locacao-preset';
 import { routes } from './app.routes';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
+import { authInterceptor } from './core/interceptors/auth-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([authInterceptor])),
     MessageService,
     providePrimeNG({
       theme: {
@@ -18,7 +19,7 @@ export const appConfig: ApplicationConfig = {
         options: {
           darkModeSelector: '.dark-mode',
         },
-      },
+      }
     }),
   ],
 };

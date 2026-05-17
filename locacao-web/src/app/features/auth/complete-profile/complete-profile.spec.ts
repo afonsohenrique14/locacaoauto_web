@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Register } from './register';
+import { CompleteProfile } from './complete-profile';
 
-describe('Register', () => {
-  let component: Register;
-  let fixture: ComponentFixture<Register>;
+describe('CompleteProfile', () => {
+  let component: CompleteProfile;
+  let fixture: ComponentFixture<CompleteProfile>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Register],
+      imports: [CompleteProfile],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(Register);
+    fixture = TestBed.createComponent(CompleteProfile);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });
