@@ -7,6 +7,9 @@ import { Toolbar } from 'primeng/toolbar';
 import { Footer } from '../footer/footer';
 import { Toast } from 'primeng/toast';
 import { NotificationService } from '../../../core/services/notification';
+import { AuthService } from '../../../core/services/auth';
+import { ThemeService } from '../../../core/services/theme';
+
 
 @Component({
   selector: 'app-layout',
@@ -17,19 +20,21 @@ import { NotificationService } from '../../../core/services/notification';
 export class AppLayout {
 
   private notification = inject(NotificationService);
-  sidebarVisible = signal(true);
-  isDarkMode = signal(false);
+  private authService = inject(AuthService)
+  theme = inject(ThemeService);
 
-  toggleDarkMode() {
-    this.isDarkMode.set(!this.isDarkMode());
-    document.querySelector('html')?.classList.toggle('dark-mode');
-  }
+// remove isDarkMode e toggleDarkMode
+  sidebarVisible = signal(true);
 
 
   ngOnInit() {
     setTimeout(() => {
       this.notification.flushPending();
     }, 100);
+  }
+
+  logout(){
+    this.authService.logout()
   }
 
   menuItems: MenuItem[] = [

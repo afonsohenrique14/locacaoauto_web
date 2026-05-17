@@ -52,7 +52,7 @@ export class Register {
           {
             next: (user) =>{
               this.notification.setPending('success', 'Sucesso', 'Registro bem-sucedido! Bem-vindo ao Gerenciador de Locação.');
-              this.router.navigate(['/app']);
+              this.authService.navigateAfterAuth(user);
             },
             error: (err) => {
                this.notification.error(err.error || 'Erro ao criar conta. Tente novamente.');

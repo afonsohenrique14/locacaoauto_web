@@ -12,12 +12,18 @@
     </ng-template>
     <ng-template #end>
       <p-button
-        [icon]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"
+        [icon]="theme.isDarkMode()? 'pi pi-sun' : 'pi pi-moon'"
         [rounded]="true"
         [text]="true"
-        (onClick)="toggleDarkMode()"
+        (onClick)="theme.toggle()"
       />
       <p-button icon="pi pi-user" [rounded]="true" [text]="true" />
+      <p-button
+        icon="pi pi-sign-out"
+        [rounded]="true"
+        [text]="true"
+        (onClick)="logout()"
+        />
     </ng-template>
   </p-toolbar>
 

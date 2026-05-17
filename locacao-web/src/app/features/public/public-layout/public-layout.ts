@@ -1,9 +1,10 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Button } from 'primeng/button';
 import { Toolbar } from 'primeng/toolbar';
 import { Footer } from '../../../shared/components/footer/footer';
 import { Toast } from 'primeng/toast';
+import { ThemeService } from '../../../core/services/theme';
 
 @Component({
   selector: 'app-public-layout',
@@ -12,10 +13,7 @@ import { Toast } from 'primeng/toast';
   styleUrl: './public-layout.scss',
 })
 export class PublicLayout {
-  isDarkMode = signal(false);
 
-  toggleDarkMode() {
-    this.isDarkMode.set(!this.isDarkMode());
-    document.querySelector('html')?.classList.toggle('dark-mode');
-  }
+  theme = inject(ThemeService);
+
 }

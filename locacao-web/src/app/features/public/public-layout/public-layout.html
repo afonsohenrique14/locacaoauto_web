@@ -9,10 +9,10 @@
       <p-button label="Entrar" [text]="true" routerLink="/auth/login" />
       <p-button label="Cadastrar" routerLink="/auth/register" />
       <p-button
-        [icon]="isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"
+        [icon]="theme.isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"
         [rounded]="true"
         [text]="true"
-        (click)="toggleDarkMode()"
+        (click)="theme.toggle()"
       />
     </ng-template>
   </p-toolbar>

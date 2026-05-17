@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -19,6 +19,8 @@ export class Login {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
   private notification = inject(NotificationService);
 
   loginForm = this.fb.group({
@@ -35,7 +37,8 @@ export class Login {
         {
           next: (user) =>{
             this.notification.setPending('success', 'Sucesso', 'Bem-vindo de volta!');
-            this.router.navigate(['/app']);
+            const returnUrl = this.route.snapshot.queryParams['returnUrl'];
+            this.authService.navigateAfterAuth(user, returnUrl);
           },
           error: (err) => {
             this.notification.error(err.error || 'Erro ao fazer login. Tente novamente.');

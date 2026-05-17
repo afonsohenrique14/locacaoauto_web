@@ -17,6 +17,21 @@ export class AuthService {
 
   currentUser = signal<User | null>(null);
 
+  navigateAfterAuth(user: User, returnUrl?: string) {
+      if (returnUrl && returnUrl !== '/auth/login') {
+        this.router.navigate([returnUrl]);
+        return;
+      }
+
+      console.log(user)
+
+      if (user.personId) {
+        this.router.navigate(['/app']);
+      } else {
+        this.router.navigate(['/app/complete-profile']);
+      }
+  }
+
   register(email: string, password: string) {
     return this.http.post<User>(`${this.apiUrl}/auth/register`, { email, password }).pipe(
       tap(user =>{
@@ -37,7 +52,6 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    console.log(localStorage.getItem('token'))
     return !!localStorage.getItem('token');
   }
 
