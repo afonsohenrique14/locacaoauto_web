@@ -8,8 +8,16 @@ import { InputText } from 'primeng/inputtext';
 import { Select } from 'primeng/select';
 import { Step, StepList, StepPanel, StepPanels, Stepper } from 'primeng/stepper';
 import { AddressService } from '../../../core/services/address';
-import {Address} from '../../../core//models/address.model'
 import { NotificationService } from '../../../core/services/notification';
+import { IndividualPerson } from '../../../core/models/individualPerson.model';
+import { CompleteProfileService } from '../../../core/services/complete-profile-service';
+import { Router } from '@angular/router';
+import { LegalPerson } from '../../../core/models/legalPerson.mode';
+import { Checkbox } from 'primeng/checkbox';
+import { NgxMaskDirective } from "ngx-mask";
+import { cpfValidator } from '../../../core/validators/cpf.validator';
+import { licenseExpiryValidator, licenseNumberValidator } from '../../../core/validators/license.validator';
+import { cnpjValidator } from '../../../core/validators/cnpj.validator';
 @Component({
   selector: 'app-complete-profile',
   imports: [
@@ -25,7 +33,9 @@ import { NotificationService } from '../../../core/services/notification';
     InputText,
     DatePicker,
     Select,
-  ],
+    Checkbox,
+    NgxMaskDirective
+],
   templateUrl: './complete-profile.html',
   styleUrl: './complete-profile.scss',
 })
@@ -45,7 +55,8 @@ export class CompleteProfile {
   private fb = inject(FormBuilder);
   private addressService = inject(AddressService);
   private notification = inject(NotificationService)
-
+  private completeProfileService = inject(CompleteProfileService)
+  private router = inject(Router)
 
   nextStep() {
     this.activeStep.update((s) => s + 1);
@@ -66,20 +77,24 @@ export class CompleteProfile {
     this.personType.set(type);
   }
 
-  stepTwoForm = this.fb.group({
+  stepTwoIndividualForm = this.fb.group({
     name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phone: ['', Validators.required],
-    //individual
-    cpf: [''],
-    birthDate: [null],
-    licenseNumber: [''],
-    licenseExpiry: [''],
+    cpf: ['', [Validators.required, cpfValidator]],
+    birthDate: [null, Validators.required],
+    licenseNumber: ['', [licenseNumberValidator]],
+    licenseExpiry: [null, [licenseExpiryValidator]],
     licenseCategory: [''],
     hasAtr: [false],
-    // legal
-    cnpj: [''],
-    tradeName: [''],
+  });
+
+  stepTwoLegalForm = this.fb.group({
+    name: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    phone: ['', Validators.required],
+    cnpj: ['', [Validators.required, cnpjValidator]],
+    tradeName: ['', Validators.required],
   });
 
   stepThreeForm = this.fb.group({
@@ -96,6 +111,32 @@ export class CompleteProfile {
     this.stepThreeForm.get('zipCode')?.valueChanges.subscribe(() => {
       this.resetAddressFields();
     });
+
+    this.stepTwoIndividualForm.get('licenseNumber')?.valueChanges.subscribe(value => {
+      this.updateLicenseValidators(value);
+    });
+  }
+
+  private updateLicenseValidators(licenseNumber: string | null) {
+    const expiry = this.stepTwoIndividualForm.get('licenseExpiry');
+    const category = this.stepTwoIndividualForm.get('licenseCategory');
+    const hasAtr = this.stepTwoIndividualForm.get('hasAtr');
+
+    if (licenseNumber && licenseNumber.replace(/\D/g, '').length === 11) {
+      // número preenchido — demais campos obrigatórios
+      expiry?.setValidators([Validators.required, licenseExpiryValidator]);
+      category?.setValidators([Validators.required]);
+    } else {
+      // número vazio — limpa e remove validadores
+      expiry?.clearValidators();
+      expiry?.reset();
+      category?.clearValidators();
+      category?.reset();
+      hasAtr?.reset(false);
+    }
+
+    expiry?.updateValueAndValidity();
+    category?.updateValueAndValidity();
   }
 
   onFillZipCode(){
@@ -138,10 +179,83 @@ export class CompleteProfile {
   }
 
   onSubmit() {
-    console.log({
-      type: this.personType(),
-      ...this.stepTwoForm.value,
-      ...this.stepThreeForm.value,
+    if (!this.stepOneForm.valid) return this.goToStep(1);
+
+    const stepTwoValid = this.personType() === 'individual'
+      ? this.stepTwoIndividualForm.valid
+      : this.stepTwoLegalForm.valid;
+
+    if (!stepTwoValid) return this.goToStep(2);
+    if (!this.stepThreeForm.valid) return this.goToStep(3);
+
+    const request$ = this.personType() === 'individual'
+      ? this.completeProfileService.completeIndividualProfile(this.buildIndividualData())
+      : this.completeProfileService.completeLegalProfile(this.buildLegalData());
+
+    request$.subscribe({
+      next: () => {
+        this.router.navigate(['/app'])
+        this.notification.setPending('success', 'Sucesso', 'Cadastro Atualizado com sucesso!')
+      },
+      error: (err) => this.notification.error(err.error || 'Erro ao salvar perfil.')
     });
   }
+
+  private buildIndividualData(): Omit<IndividualPerson, 'id'> {
+    const f = this.stepTwoIndividualForm.value;
+
+    const licenseNumber = f.licenseNumber?.replace(/\D/g, '');
+    const license = licenseNumber?.length === 11 ? {
+      number: f.licenseNumber!,
+      expiry: this.formatDate(f.licenseExpiry!)!,
+      category: f.licenseCategory!,
+      hasAtr: f.hasAtr ?? false
+    } : null;
+
+    return {
+      name: f.name!,
+      email: f.email!,
+      phone: f.phone!,
+      cpf: f.cpf!,
+      birthDate: this.formatDate(f.birthDate!)!,
+      license,
+      address: this.buildAddress()
+    };
+  }
+
+  private buildLegalData(): Omit<LegalPerson, 'id'> {
+    const f = this.stepTwoLegalForm.value;
+    return {
+      name: f.name!,
+      email: f.email!,
+      phone: f.phone!,
+      cnpj: f.cnpj!,
+      tradeName: f.tradeName!,
+      address: this.buildAddress()
+    };
+  }
+  private goToStep(step: number) {
+    this.notification.error('Verifique se todos os dados foram preenchidos!', 'Cadastro Incompleto');
+    this.activeStep.set(step);
+  }
+
+  private buildAddress() {
+    const f = this.stepThreeForm.getRawValue();
+    return {
+      zipCode: f.zipCode!,
+      street: f.street!,
+      number: f.number!,
+      complement: f.complement!,
+      district: f.neighborhood!,
+      city: f.city!,
+      state: f.state!,
+    };
+  }
+
+  private formatDate(date: Date | string | null): string | null {
+    if (!date) return null;
+    const d = new Date(date);
+    return d.toISOString().split('T')[0]; // "1993-09-02"
+  }
+
 }

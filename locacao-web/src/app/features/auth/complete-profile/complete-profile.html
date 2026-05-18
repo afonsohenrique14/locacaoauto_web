@@ -11,177 +11,168 @@
       <p-stepper
         [value]="activeStep()"
         (valueChange)="onStepChange($event)"
-        class="complete-profile-stepper"
-      >
+        class="complete-profile-stepper">
         <p-step-list>
           <p-step [value]="1">Tipo de conta</p-step>
           <p-step [value]="2">Dados pessoais</p-step>
           <p-step [value]="3">Endereço</p-step>
           <p-step [value]="4">Confirmação</p-step>
         </p-step-list>
+
         <p-step-panels>
+          <!-- Step 1 -->
           <p-step-panel [value]="1">
-            <ng-template #content let-activateCallback="activateCallback">
+            <ng-template #content>
               <div class="step-content">
                 <h3 class="step-title">Qual o tipo da sua conta?</h3>
                 <div class="person-type-grid">
-                  <div
-                    class="person-type-card"
+                  <div class="person-type-card"
                     [class.selected]="personType() === 'individual'"
-                    (click)="selectPersonType('individual')"
-                  >
+                    (click)="selectPersonType('individual')">
                     <i class="pi pi-user person-type-icon"></i>
                     <span class="person-type-label">Pessoa Física</span>
                     <span class="person-type-desc">CPF, motorista ou locador individual</span>
                   </div>
-                  <div
-                    class="person-type-card"
+                  <div class="person-type-card"
                     [class.selected]="personType() === 'legal'"
-                    (click)="selectPersonType('legal')"
-                  >
+                    (click)="selectPersonType('legal')">
                     <i class="pi pi-building person-type-icon"></i>
                     <span class="person-type-label">Pessoa Jurídica</span>
                     <span class="person-type-desc">CNPJ, empresa ou locadora</span>
                   </div>
                 </div>
                 <div class="step-actions">
-                  <p-button
-                    label="Próximo"
-                    icon="pi pi-arrow-right"
-                    iconPos="right"
-                    (click)="nextStep()"
-                  />
+                  <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (click)="nextStep()" />
                 </div>
               </div>
             </ng-template>
           </p-step-panel>
 
-          <p-step-panel [value]="2">
-            <ng-template #content let-activateCallback="activateCallback">
-              <div class="step-content">
-                <h3 class="step-title">Seus dados</h3>
-                <form [formGroup]="stepTwoForm" class="step-form">
-                  <p-float-label variant="on">
-                    <input pInputText id="name" formControlName="name" />
-                    <label for="name">Nome completo</label>
-                  </p-float-label>
-                  <p-float-label variant="on">
-                    <input pInputText id="email" formControlName="email" />
-                    <label for="email">E-mail</label>
-                  </p-float-label>
-                  <p-float-label variant="on">
-                    <input pInputText id="phone" formControlName="phone" />
-                    <label for="phone">Telefone</label>
-                  </p-float-label>
-
-                  @if (personType() === 'individual') {
+          <!-- Step 2 — Individual -->
+          @if (personType() === 'individual') {
+            <p-step-panel [value]="2">
+              <ng-template #content>
+                <div class="step-content">
+                  <h3 class="step-title">Seus dados</h3>
+                  <form [formGroup]="stepTwoIndividualForm" class="step-form">
+                    <p-float-label variant="on">
+                      <input pInputText id="ind-name" formControlName="name" autocomplete="name" />
+                      <label for="ind-name">Nome completo</label>
+                    </p-float-label>
+                    <p-float-label variant="on">
+                      <input pInputText id="ind-email" formControlName="email" autocomplete="email" />
+                      <label for="ind-email">E-mail</label>
+                    </p-float-label>
+                    <p-float-label variant="on">
+                      <input pInputText id="ind-phone" formControlName="phone" autocomplete="tel" mask="(00) 00000-0000" />
+                      <label for="ind-phone">Telefone</label>
+                    </p-float-label>
                     <div class="form-row">
                       <p-float-label variant="on">
-                        <input pInputText id="cpf" formControlName="cpf" />
+                        <input pInputText id="cpf" formControlName="cpf" mask="000.000.000-00" />
                         <label for="cpf">CPF</label>
                       </p-float-label>
                       <p-float-label variant="on">
-                        <p-date-picker
-                          id="birthDate"
-                          formControlName="birthDate"
-                          [showIcon]="true"
-                          dateFormat="dd/mm/yy"
-                          lang="pt-br"
-                        />
+                        <p-date-picker id="birthDate" formControlName="birthDate" [showIcon]="true" dateFormat="dd/mm/yy" />
                         <label for="birthDate">Data de nascimento</label>
                       </p-float-label>
                     </div>
                     <div class="form-row">
                       <p-float-label variant="on">
-                        <input pInputText id="licenseNumber" formControlName="licenseNumber" />
+                        <input pInputText id="licenseNumber" formControlName="licenseNumber" mask="00000000000" />
                         <label for="licenseNumber">Número da CNH</label>
                       </p-float-label>
                       <p-float-label variant="on">
-                        <p-select
-                          id="licenseCategory"
-                          formControlName="licenseCategory"
-                          [options]="licenseCategories"
-                          optionLabel="label"
-                          optionValue="value"
-                        />
+                        <p-select id="licenseCategory" formControlName="licenseCategory"
+                          [options]="licenseCategories" optionLabel="label" optionValue="value" />
                         <label for="licenseCategory">Categoria</label>
                       </p-float-label>
                     </div>
                     <div class="form-row-dates">
                       <p-float-label variant="on">
-                        <p-date-picker
-                          id="licenseExpiry"
-                          formControlName="licenseExpiry"
-                          [showIcon]="true"
-                          dateFormat="dd/mm/yy"
-                        />
+                        <p-date-picker id="licenseExpiry" formControlName="licenseExpiry" [showIcon]="true" dateFormat="dd/mm/yy" />
                         <label for="licenseExpiry">Validade da CNH</label>
                       </p-float-label>
+                      <div class="checkbox-field">
+                        <p-checkbox id="hasAtr" formControlName="hasAtr" [binary]="true" />
+                        <label for="hasAtr">CNH tem ATR</label>
+                      </div>
                     </div>
-                  }
+                  </form>
+                  <div class="step-actions">
+                    <p-button label="Voltar" [outlined]="true" icon="pi pi-arrow-left" (click)="prevStep()" />
+                    <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (click)="nextStep()" />
+                  </div>
+                </div>
+              </ng-template>
+            </p-step-panel>
+          }
 
-                  @if (personType() === 'legal') {
+          <!-- Step 2 — Legal -->
+          @if (personType() === 'legal') {
+            <p-step-panel [value]="2">
+              <ng-template #content>
+                <div class="step-content">
+                  <h3 class="step-title">Seus dados</h3>
+                  <form [formGroup]="stepTwoLegalForm" class="step-form">
                     <p-float-label variant="on">
-                      <input pInputText id="cnpj" formControlName="cnpj" />
+                      <input pInputText id="leg-name" formControlName="name" autocomplete="name" />
+                      <label for="leg-name">Nome completo</label>
+                    </p-float-label>
+                    <p-float-label variant="on">
+                      <input pInputText id="leg-email" formControlName="email" autocomplete="email" />
+                      <label for="leg-email">E-mail</label>
+                    </p-float-label>
+                    <p-float-label variant="on">
+                      <input pInputText id="leg-phone" formControlName="phone" autocomplete="tel" mask="(00) 00000-0000" />
+                      <label for="leg-phone">Telefone</label>
+                    </p-float-label>
+                    <p-float-label variant="on">
+                      <input pInputText id="cnpj" formControlName="cnpj" mask="00.000.000/0000-00" />
                       <label for="cnpj">CNPJ</label>
                     </p-float-label>
                     <p-float-label variant="on">
                       <input pInputText id="tradeName" formControlName="tradeName" />
                       <label for="tradeName">Nome fantasia</label>
                     </p-float-label>
-                  }
-                </form>
-                <div class="step-actions">
-                  <p-button
-                    label="Voltar"
-                    [outlined]="true"
-                    icon="pi pi-arrow-left"
-                    (click)="prevStep()"
-                  />
-                  <p-button
-                    label="Próximo"
-                    icon="pi pi-arrow-right"
-                    iconPos="right"
-                    (click)="nextStep()"
-                  />
+                  </form>
+                  <div class="step-actions">
+                    <p-button label="Voltar" [outlined]="true" icon="pi pi-arrow-left" (click)="prevStep()" />
+                    <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (click)="nextStep()" />
+                  </div>
                 </div>
-              </div>
-            </ng-template>
-          </p-step-panel>
+              </ng-template>
+            </p-step-panel>
+          }
 
+          <!-- Step 3 -->
           <p-step-panel [value]="3">
-            <ng-template #content let-activateCallback="activateCallback">
+            <ng-template #content>
               <div class="step-content">
                 <h3 class="step-title">Seu endereço</h3>
                 <form [formGroup]="stepThreeForm" class="step-form">
                   <p-float-label variant="on">
-                    <input
-                      pInputText id="zipCode"
-                      formControlName="zipCode"
-                      (blur)="onFillZipCode()"
-                      />
+                    <input pInputText id="zipCode" formControlName="zipCode" (blur)="onFillZipCode()" autocomplete="postal-code" />
                     <label for="zipCode">CEP</label>
                   </p-float-label>
                   <div class="form-row">
                     <p-float-label variant="on">
-                      <input pInputText id="state" formControlName="state" />
+                      <input pInputText id="state" formControlName="state" autocomplete="address-level1" />
                       <label for="state">Estado</label>
                     </p-float-label>
                     <p-float-label variant="on">
-                      <input pInputText id="city" formControlName="city" />
+                      <input pInputText id="city" formControlName="city" autocomplete="address-level2" />
                       <label for="city">Cidade</label>
                     </p-float-label>
                   </div>
                   <p-float-label variant="on">
-                    <input pInputText id="street" formControlName="street" />
+                    <input pInputText id="street" formControlName="street" autocomplete="street-address" />
                     <label for="street">Rua</label>
                   </p-float-label>
-
                   <p-float-label variant="on">
                     <input pInputText id="neighborhood" formControlName="neighborhood" />
                     <label for="neighborhood">Bairro</label>
                   </p-float-label>
-
                   <div class="form-row">
                     <p-float-label variant="on">
                       <input pInputText id="number" formControlName="number" />
@@ -194,70 +185,57 @@
                   </div>
                 </form>
                 <div class="step-actions">
-                  <p-button
-                    label="Voltar"
-                    [outlined]="true"
-                    icon="pi pi-arrow-left"
-                    (click)="prevStep()"
-                  />
-                  <p-button
-                    label="Próximo"
-                    icon="pi pi-arrow-right"
-                    iconPos="right"
-                    (click)="nextStep()"
-                  />
+                  <p-button label="Voltar" [outlined]="true" icon="pi pi-arrow-left" (click)="prevStep()" />
+                  <p-button label="Próximo" icon="pi pi-arrow-right" iconPos="right" (click)="nextStep()" />
                 </div>
               </div>
             </ng-template>
           </p-step-panel>
 
+          <!-- Step 4 -->
           <p-step-panel [value]="4">
-            <ng-template #content let-activateCallback="activateCallback">
+            <ng-template #content>
               <div class="step-content">
                 <h3 class="step-title">Confirme seus dados</h3>
                 <div class="confirmation">
                   <p-card class="confirmation-section">
                     <ng-template #content>
                       <h4>Tipo de conta</h4>
-                      <p>
-                        {{ personType() === 'individual' ? 'Pessoa Física' : 'Pessoa Jurídica' }}
-                      </p>
+                      <p>{{ personType() === 'individual' ? 'Pessoa Física' : 'Pessoa Jurídica' }}</p>
                     </ng-template>
                   </p-card>
                   <p-card class="confirmation-section">
                     <ng-template #content>
                       <h4>Dados pessoais</h4>
-                      <p><strong>Nome:</strong> {{ stepTwoForm.get('name')?.value }}</p>
-                      <p><strong>Email:</strong> {{ stepTwoForm.get('email')?.value }}</p>
-                      <p><strong>Telefone:</strong> {{ stepTwoForm.get('phone')?.value }}</p>
+                      @if (personType() === 'individual') {
+                        <p><strong>Nome:</strong> {{ stepTwoIndividualForm.get('name')?.value }}</p>
+                        <p><strong>Email:</strong> {{ stepTwoIndividualForm.get('email')?.value }}</p>
+                        <p><strong>Telefone:</strong> {{ stepTwoIndividualForm.get('phone')?.value }}</p>
+                        <p><strong>CPF:</strong> {{ stepTwoIndividualForm.get('cpf')?.value }}</p>
+                      } @else {
+                        <p><strong>Nome:</strong> {{ stepTwoLegalForm.get('name')?.value }}</p>
+                        <p><strong>Email:</strong> {{ stepTwoLegalForm.get('email')?.value }}</p>
+                        <p><strong>Telefone:</strong> {{ stepTwoLegalForm.get('phone')?.value }}</p>
+                        <p><strong>CNPJ:</strong> {{ stepTwoLegalForm.get('cnpj')?.value }}</p>
+                      }
                     </ng-template>
                   </p-card>
                   <p-card class="confirmation-section">
                     <ng-template #content>
                       <h4>Endereço</h4>
-                      <p>
-                        {{ stepThreeForm.get('street')?.value }},
-                        {{ stepThreeForm.get('number')?.value }}
-                      </p>
-                      <p>
-                        {{ stepThreeForm.get('city')?.value }} -
-                        {{ stepThreeForm.get('state')?.value }}
-                      </p>
+                      <p>{{ stepThreeForm.get('street')?.value }}, {{ stepThreeForm.get('number')?.value }}</p>
+                      <p>{{ stepThreeForm.get('city')?.value }} - {{ stepThreeForm.get('state')?.value }}</p>
                     </ng-template>
                   </p-card>
                 </div>
                 <div class="step-actions">
-                  <p-button
-                    label="Voltar"
-                    [outlined]="true"
-                    icon="pi pi-arrow-left"
-                    (click)="prevStep()"
-                  />
+                  <p-button label="Voltar" [outlined]="true" icon="pi pi-arrow-left" (click)="prevStep()" />
                   <p-button label="Salvar perfil" icon="pi pi-check" (click)="onSubmit()" />
                 </div>
               </div>
             </ng-template>
           </p-step-panel>
+
         </p-step-panels>
       </p-stepper>
     </ng-template>
