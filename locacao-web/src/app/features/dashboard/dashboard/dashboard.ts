@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Button } from 'primeng/button';
 import { Card } from 'primeng/card';
@@ -21,4 +21,18 @@ export class Dashboard {
     this.authService.setContext(context);
     this.router.navigate([`/app/${context}`]);
   }
+
+  firstName = computed(() => {
+    const user = this.authService.currentUser();
+    if (user?.person?.name) {
+      return ', ' + user.person.name.split(' ')[0];
+    }
+    if (user?.email) {
+      return ', ' + user.email.split('@')[0];
+    }
+    return '';
+  });
+
 }
+
+

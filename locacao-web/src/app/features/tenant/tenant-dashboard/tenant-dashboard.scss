@@ -1,0 +1,77 @@
+.tenant-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 0;
+
+  .tenant-dashboard-header {
+    .tenant-dashboard-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--p-text-color);
+      letter-spacing: -0.02em;
+    }
+
+    .tenant-dashboard-subtitle {
+      margin-top: 0.25rem;
+      color: var(--p-text-muted-color);
+      font-size: 1rem;
+    }
+  }
+
+  .tenant-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    max-width: 440px;
+
+    @media (max-width: 600px) {
+      max-width: 100%;
+    }
+  }
+}
+
+.menu-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .menu-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .menu-card-icon {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      i { font-size: 1.75rem; }
+
+      &.rentals {
+        background-color: var(--p-primary-50);
+        i { color: var(--p-primary-600); }
+      }
+    }
+
+    .menu-card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--p-text-color);
+    }
+
+    .menu-card-desc {
+      color: var(--p-text-muted-color);
+      line-height: 1.6;
+      font-size: 0.875rem;
+    }
+  }
+}

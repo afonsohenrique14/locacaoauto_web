@@ -23,8 +23,6 @@ export class AuthService {
         return;
       }
 
-      console.log(user)
-
       if (user.personId) {
         this.router.navigate(['/app']);
       } else {

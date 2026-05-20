@@ -67,10 +67,14 @@ export const routes: Routes = [
     },
     {
       path: 'tenant',
-      redirectTo: 'tenant/rentals',
+      redirectTo: 'tenant/dashboard',
       pathMatch: 'full'
     },
     {
+      path: 'tenant/dashboard',
+      loadComponent: () => import('./features/tenant/tenant-dashboard/tenant-dashboard').then(m => m.TenantDashboard)
+    },
+      {
       path: 'tenant/rentals',
       loadComponent: () => import('./features/tenant/rentals/rentals').then(m => m.TenantRentals)
     },

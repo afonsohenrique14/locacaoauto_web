@@ -44,7 +44,7 @@ export class AppLayout {
   ];
 
   private tenantMenu: MenuItem[] = [
-    { label: 'Dashboard', icon: 'pi pi-home', routerLink: '/app/dashboard' },
+  { label: 'Dashboard', icon: 'pi pi-home', routerLink: '/app/tenant/dashboard' },
     {
       label: 'Locatário',
       icon: 'pi pi-user',
@@ -56,7 +56,7 @@ export class AppLayout {
     { separator: true },
     {
       label: 'Locar meu veículo',
-      icon: 'pi pi-map',
+      icon: 'pi pi-key',
       command: () => this.switchContext()
     }
   ];
@@ -67,7 +67,7 @@ export class AppLayout {
 
   menuItems = computed(() => {
     const context = this.authService.getContext();
-    console.log(context);
+
     if (context === 'landlord') return this.landlordMenu;
     if (context === 'tenant') return this.tenantMenu;
     return this.defaultMenu;

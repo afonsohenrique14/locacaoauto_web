@@ -1,0 +1,26 @@
+<div class="tenant-dashboard">
+  <div class="tenant-dashboard-header">
+    <h1 class="tenant-dashboard-title">Painel do Locatário</h1>
+    <p class="tenant-dashboard-subtitle">Acompanhe suas locações</p>
+  </div>
+
+  <div class="tenant-dashboard-grid">
+    <p-card class="menu-card" (click)="navigateTo('rentals')">
+      <ng-template #content>
+        <div class="menu-card-content">
+          <div class="menu-card-icon rentals">
+            <i class="pi pi-list"></i>
+          </div>
+          <h2 class="menu-card-title">Minhas Locações</h2>
+          <p class="menu-card-desc">Acompanhe suas locações ativas e veja o histórico completo.</p>
+          <p-button
+            label="Ver Locações"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            [fluid]="true"
+            (click)="navigateTo('rentals'); $event.stopPropagation()" />
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>
