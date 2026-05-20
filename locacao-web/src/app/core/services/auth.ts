@@ -65,4 +65,24 @@ export class AuthService {
     return localStorage.getItem('token');
   }
 
+  private _context = signal<'landlord' | 'tenant' | null>(
+    localStorage.getItem('context') as 'landlord' | 'tenant' | null
+  );
+
+  context = this._context.asReadonly();
+
+  setContext(context: 'landlord' | 'tenant') {
+    localStorage.setItem('context', context);
+    this._context.set(context);
+  }
+
+  clearContext() {
+    localStorage.removeItem('context');
+    this._context.set(null);
+  }
+
+  getContext(): 'landlord' | 'tenant' | null {
+    return this._context();
+  }
+
 }

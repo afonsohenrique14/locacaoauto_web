@@ -1,4 +1,4 @@
-<p-toast/>
+<p-toast />
 <div class="layout">
   <p-toolbar class="layout-header">
     <ng-template #start>
@@ -6,34 +6,30 @@
         icon="pi pi-bars"
         [rounded]="true"
         [text]="true"
-        (click)="sidebarVisible.set(!sidebarVisible())"
-      />
+        (click)="sidebarVisible.set(!sidebarVisible())" />
       <span class="layout-logo">LocaçãoAuto</span>
     </ng-template>
     <ng-template #end>
       <p-button
-        [icon]="theme.isDarkMode()? 'pi pi-sun' : 'pi pi-moon'"
+        [icon]="theme.isDarkMode() ? 'pi pi-sun' : 'pi pi-moon'"
         [rounded]="true"
         [text]="true"
-        (onClick)="theme.toggle()"
-      />
+        (click)="theme.toggle()" />
       <p-button icon="pi pi-user" [rounded]="true" [text]="true" />
       <p-button
         icon="pi pi-sign-out"
         [rounded]="true"
         [text]="true"
-        (onClick)="logout()"
-        />
+        (click)="logout()" />
     </ng-template>
   </p-toolbar>
 
   <div class="layout-body">
     <aside class="layout-sidebar" [class.collapsed]="!sidebarVisible()">
-      <p-panelmenu [model]="menuItems" class="h-full" />
+      <p-panelmenu [model]="menuItems()" />
     </aside>
 
     <main class="layout-content">
-
       <router-outlet />
     </main>
   </div>

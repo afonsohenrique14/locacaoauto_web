@@ -1,0 +1,44 @@
+<div class="landlord-dashboard">
+  <div class="landlord-dashboard-header">
+    <h1 class="landlord-dashboard-title">Painel do Locador</h1>
+    <p class="landlord-dashboard-subtitle">Gerencie sua frota e locações</p>
+  </div>
+
+  <div class="landlord-dashboard-grid">
+    <p-card class="menu-card" (click)="navigateTo('rentals')">
+      <ng-template #content>
+        <div class="menu-card-content">
+          <div class="menu-card-icon rentals">
+            <i class="pi pi-list"></i>
+          </div>
+          <h2 class="menu-card-title">Locações</h2>
+          <p class="menu-card-desc">Acompanhe e gerencie todas as suas locações ativas e históricas.</p>
+          <p-button
+            label="Ver Locações"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            [fluid]="true"
+            (click)="navigateTo('rentals'); $event.stopPropagation()" />
+        </div>
+      </ng-template>
+    </p-card>
+
+    <p-card class="menu-card" (click)="navigateTo('vehicles')">
+      <ng-template #content>
+        <div class="menu-card-content">
+          <div class="menu-card-icon vehicles">
+            <i class="pi pi-car"></i>
+          </div>
+          <h2 class="menu-card-title">Veículos</h2>
+          <p class="menu-card-desc">Cadastre e gerencie os veículos disponíveis para locação.</p>
+          <p-button
+            label="Ver Veículos"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            [fluid]="true"
+            (click)="navigateTo('vehicles'); $event.stopPropagation()" />
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

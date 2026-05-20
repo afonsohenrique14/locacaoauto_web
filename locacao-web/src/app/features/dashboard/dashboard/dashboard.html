@@ -1,0 +1,46 @@
+<div class="dashboard">
+  <div class="dashboard-header">
+    <h1 class="dashboard-title">
+      Olá{{ user()?.email ? ', ' + user()?.email : '' }}!
+    </h1>
+    <p class="dashboard-subtitle">O que deseja fazer hoje?</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <p-card class="context-card" (click)="selectContext('tenant')">
+      <ng-template #content>
+        <div class="context-card-content">
+          <i class="pi pi-car context-icon"></i>
+          <h2 class="context-title">Quero alugar um veículo</h2>
+          <p class="context-desc">
+            Encontre veículos disponíveis e gerencie suas locações como locatário.
+          </p>
+          <p-button
+            label="Entrar como Locatário"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            [fluid]="true"
+            (click)="selectContext('tenant')" />
+        </div>
+      </ng-template>
+    </p-card>
+
+    <p-card class="context-card" (click)="selectContext('landlord')">
+      <ng-template #content>
+        <div class="context-card-content">
+          <i class="pi pi-building context-icon"></i>
+          <h2 class="context-title">Quero alugar meu veículo</h2>
+          <p class="context-desc">
+            Gerencie sua frota e locações como locador.
+          </p>
+          <p-button
+            label="Entrar como Locador"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            [fluid]="true"
+            (click)="selectContext('landlord')" />
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>
