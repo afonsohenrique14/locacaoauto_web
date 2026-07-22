@@ -1,0 +1,78 @@
+.vehicle-form {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  min-height: 100%;
+
+  .vehicle-form-card {
+    width: 100%;
+    max-width: 860px;
+
+    ::ng-deep .p-card-body {
+      padding: 1.5rem;
+    }
+
+    .vehicle-form-header {
+      padding: 1.5rem 1.5rem 0;
+
+      .vehicle-form-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin: 0 0 0.25rem;
+        color: var(--p-text-color);
+      }
+
+      .vehicle-form-subtitle {
+        font-size: 0.875rem;
+        margin: 0;
+        color: var(--p-text-muted-color);
+      }
+    }
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+
+  ::ng-deep .p-floatlabel {
+    width: 100%;
+
+    input.p-inputtext,
+    .p-inputnumber,
+    .p-inputnumber input {
+      width: 100%;
+    }
+  }
+
+  p-float-label {
+    display: block;
+    width: 100%;
+    padding-top: 0.5rem;
+  }
+
+  .field-group {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+
+    > p-float-label {
+      flex: 1;
+    }
+  }
+
+  .field-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 1rem;
+
+    label {
+      color: var(--p-text-color);
+      font-size: 0.875rem;
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+}

@@ -1,6 +1,5 @@
 import { IndividualPerson } from "./individualPerson.model";
 import { LegalPerson } from "./legalPerson.mode";
-import { Person } from "./person.model";
 
 export interface User {
   id: string;

@@ -54,9 +54,9 @@ export class CompleteProfile {
 
   private fb = inject(FormBuilder);
   private addressService = inject(AddressService);
-  private notification = inject(NotificationService)
-  private completeProfileService = inject(CompleteProfileService)
-  private router = inject(Router)
+  private notification = inject(NotificationService);
+  private completeProfileService = inject(CompleteProfileService);
+  private router = inject(Router);
 
   nextStep() {
     this.activeStep.update((s) => s + 1);
@@ -194,8 +194,8 @@ export class CompleteProfile {
 
     request$.subscribe({
       next: () => {
-        this.router.navigate(['/app'])
         this.notification.setPending('success', 'Sucesso', 'Cadastro Atualizado com sucesso!')
+        this.router.navigate(['/app'])
       },
       error: (err) => this.notification.error(err.error || 'Erro ao salvar perfil.')
     });

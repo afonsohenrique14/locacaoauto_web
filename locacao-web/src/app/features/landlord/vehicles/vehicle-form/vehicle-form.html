@@ -1,0 +1,62 @@
+<div class="vehicle-form">
+  <p-card class="vehicle-form-card">
+    <ng-template #header>
+      <div class="vehicle-form-header">
+        <h2 class="vehicle-form-title">Adicione um veículo</h2>
+        <p class="vehicle-form-subtitle">Preencha os dados para adicionar</p>
+      </div>
+    </ng-template>
+
+    <ng-template #content>
+      <form [formGroup]="add_vehicle_form">
+
+        <div class="field-group">
+          <p-float-label variant="on">
+            <input pInputText id="license" formControlName="license" (blur)="OnfillPlate()" />
+            <label for="license">Placa</label>
+          </p-float-label>
+          <div class="field-checkbox">
+            <p-checkbox id="isMercosul" formControlName="isMercosul" [binary]="true" />
+            <label for="isMercosul">Placa Mercosul</label>
+          </div>
+        </div>
+
+        <p-float-label variant="on">
+          <input pInputText id="brand" formControlName="brand" />
+          <label for="brand">Marca</label>
+        </p-float-label>
+
+        <p-float-label variant="on">
+          <input pInputText id="model" formControlName="model" />
+          <label for="model">Modelo</label>
+        </p-float-label>
+
+        <div class="field-group">
+          <p-float-label variant="on">
+            <p-inputnumber id="manufactureYear" formControlName="manufactureYear" [useGrouping]="false" [min]="1900" [max]="2100" />
+            <label for="manufactureYear">Ano de Fabricação</label>
+          </p-float-label>
+          <p-float-label variant="on">
+            <p-inputnumber id="modelYear" formControlName="modelYear" [useGrouping]="false" [min]="1900" [max]="2100" />
+            <label for="modelYear">Ano Modelo</label>
+          </p-float-label>
+        </div>
+
+        <p-float-label variant="on">
+          <input pInputText id="renavam" formControlName="renavam" />
+          <label for="renavam">Renavam</label>
+        </p-float-label>
+
+        <p-float-label variant="on">
+          <p-inputnumber id="mileage" formControlName="mileage" [useGrouping]="true" [min]="0" suffix=" km" />
+          <label for="mileage">Quilometragem</label>
+        </p-float-label>
+        <div class="actions">
+            <p-button label="Cancelar" [outlined]="true" icon="pi pi-times-circle" (click)="OnCancel()" />
+            <p-button label="Adicionar" icon="pi pi-check" (click)="OnSubmit()" />
+        </div>
+
+      </form>
+    </ng-template>
+  </p-card>
+</div>

@@ -15,7 +15,23 @@ export class AuthService {
 
   private readonly apiUrl = environment.apiUrl;
 
-  currentUser = signal<User | null>(null);
+  currentUser = signal<User | null>(this.loadUser());
+
+  private loadUser(): User | null {
+    const raw = localStorage.getItem('user');
+    if (!raw) return null;
+    try {
+      return JSON.parse(raw) as User;
+    } catch {
+      return null;
+    }
+  }
+
+  private saveUser(user: User) {
+    localStorage.setItem('token', user.token);
+    localStorage.setItem('user', JSON.stringify(user));
+    this.currentUser.set(user);
+  }
 
   navigateAfterAuth(user: User, returnUrl?: string) {
       if (returnUrl && returnUrl !== '/auth/login') {
@@ -32,20 +48,14 @@ export class AuthService {
 
   register(email: string, password: string) {
     return this.http.post<User>(`${this.apiUrl}/auth/register`, { email, password }).pipe(
-      tap(user =>{
-        localStorage.setItem('token', user.token);
-        this.currentUser.set(user);
-      })
+    tap(user => this.saveUser(user))
     );
 
   }
 
   login(email: string, password: string) {
     return this.http.post<User>(`${this.apiUrl}/auth/login`, { email, password }).pipe(
-      tap(user =>{
-        localStorage.setItem('token', user.token);
-        this.currentUser.set(user);
-      })
+    tap(user => this.saveUser(user))
     );
   }
 
@@ -55,6 +65,7 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     this.currentUser.set(null);
     this.router.navigate(['/']);
   }

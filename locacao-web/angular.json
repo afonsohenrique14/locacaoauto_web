@@ -2,6 +2,9 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
+      "cache": {
+      "path": "/home/afonso_henrique/.cache/angular/locacao-web"
+    },
     "packageManager": "npm",
     "analytics": false
   },

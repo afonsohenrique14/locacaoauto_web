@@ -49,35 +49,39 @@ export const routes: Routes = [
           ),
       },
       {
-      path: 'landlord',
-      redirectTo: 'landlord/dashboard',
-      pathMatch: 'full'
-    },
-    {
-      path: 'landlord/dashboard',
-      loadComponent: () => import('./features/landlord/landlord-dashboard/landlord-dashboard').then(m => m.LandlordDashboard)
-    },
-    {
-      path: 'landlord/vehicles',
-      loadComponent: () => import('./features/landlord/vehicles/vehicles').then(m => m.Vehicles)
-    },
-    {
-      path: 'landlord/rentals',
-      loadComponent: () => import('./features/landlord/rentals/rentals').then(m => m.Rentals)
-    },
-    {
-      path: 'tenant',
-      redirectTo: 'tenant/dashboard',
-      pathMatch: 'full'
-    },
-    {
-      path: 'tenant/dashboard',
-      loadComponent: () => import('./features/tenant/tenant-dashboard/tenant-dashboard').then(m => m.TenantDashboard)
-    },
+        path: 'landlord',
+        redirectTo: 'landlord/dashboard',
+        pathMatch: 'full'
+      },
       {
-      path: 'tenant/rentals',
-      loadComponent: () => import('./features/tenant/rentals/rentals').then(m => m.TenantRentals)
-    },
+        path: 'landlord/dashboard',
+        loadComponent: () => import('./features/landlord/landlord-dashboard/landlord-dashboard').then(m => m.LandlordDashboard)
+      },
+      {
+        path: 'landlord/vehicles',
+        loadComponent: () => import('./features/landlord/vehicles/vehicles').then(m => m.Vehicles),
+      },
+      {
+        path: 'landlord/vehicles/vehicle-form',
+        loadComponent: () => import('./features/landlord/vehicles/vehicle-form/vehicle-form').then(m => m.VehicleForm),
+      },
+      {
+        path: 'landlord/rentals',
+        loadComponent: () => import('./features/landlord/rentals/rentals').then(m => m.Rentals)
+      },
+      {
+        path: 'tenant',
+        redirectTo: 'tenant/dashboard',
+        pathMatch: 'full'
+      },
+      {
+        path: 'tenant/dashboard',
+        loadComponent: () => import('./features/tenant/tenant-dashboard/tenant-dashboard').then(m => m.TenantDashboard)
+      },
+        {
+        path: 'tenant/rentals',
+        loadComponent: () => import('./features/tenant/rentals/rentals').then(m => m.TenantRentals)
+      },
     ],
   },
   {
