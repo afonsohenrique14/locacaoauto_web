@@ -11,7 +11,7 @@ import { NotificationService } from '../../../../core/services/notification';
 import { Button } from 'primeng/button';
 import { Router } from '@angular/router';
 import { VehicleAdd } from '../../../../core/models/vehicle_add.model';
-import { AuthService } from '../../../../core/services/auth';
+
 
 @Component({
   selector: 'app-vehicle-form',
@@ -24,7 +24,6 @@ export class VehicleForm {
   private vehicleService = inject(VehicleService);
   private notification = inject(NotificationService);
   private router = inject(Router);
-  private authService = inject(AuthService);
 
   add_vehicle_form = this.fb.group({
     license: ['', [Validators.required]],
@@ -69,7 +68,6 @@ export class VehicleForm {
     if (!this.add_vehicle_form.valid) return this.notification.error('Verifique se todos os dados foram preenchidos!', 'Cadastro Incompleto');
 
     const f = this.add_vehicle_form.value;
-    const user = this.authService.currentUser();
 
     const vehicle: VehicleAdd = {
       brand: f.brand!,
@@ -78,7 +76,6 @@ export class VehicleForm {
       manufactureYear: f.manufactureYear!,
       plate: f.license!,
       renavam: f.renavam!,
-      ownerId: user!.personId!,
       mileage: f.mileage!
     }
 

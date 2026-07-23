@@ -6,6 +6,7 @@ import { Vehicle, VeiculoStatus } from '../../../core/models/vehicle.model';
 import { VehicleService } from '../../../core/services/vehicle-service';
 import { CardModule } from 'primeng/card';
 import { Router } from '@angular/router';
+import { VehicleResponse } from '../../../core/models/vehicle-response.model';
 
 @Component({
   selector: 'app-vehicles',
@@ -14,7 +15,8 @@ import { Router } from '@angular/router';
   styleUrl: './vehicles.scss',
 })
 export class Vehicles {
-  veiculos = signal<Vehicle[]>([])
+  // vehicles.ts
+  veiculos = signal<VehicleResponse[]>([])
   loading = signal(false)
   vehicleService = inject(VehicleService)
   router = inject(Router)
@@ -25,9 +27,14 @@ export class Vehicles {
 
   private carregar() {
     this.loading.set(true);
-    this.vehicleService.getAll().subscribe(data => {
-      this.veiculos.set(data);
-      this.loading.set(false);
+    this.vehicleService.getAll().subscribe({
+      next: data => {
+        this.veiculos.set(data);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+      }
     });
   }
 

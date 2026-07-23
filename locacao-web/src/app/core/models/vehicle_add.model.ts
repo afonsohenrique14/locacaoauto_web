@@ -5,6 +5,5 @@ export interface VehicleAdd{
   manufactureYear: number,
   plate: string,
   renavam?: number,
-  ownerId: string,
   mileage: number,
 }

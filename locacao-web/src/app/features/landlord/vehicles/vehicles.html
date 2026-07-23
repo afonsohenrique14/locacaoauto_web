@@ -27,11 +27,11 @@
 
       <ng-template #body let-veiculo>
         <tr>
-          <td>{{ veiculo.license.value }}</td>
+          <td>{{ veiculo.plate }}</td>
           <td>{{ veiculo.brand }} {{ veiculo.model }}</td>
           <td>{{ veiculo.manufactureYear }} / {{ veiculo.modelYear }}</td>
           <td>
-            <p-tag [value]="veiculo.vehicleStatus" [severity]="getSeverity(veiculo.vehicleStatus)" />
+            <p-tag [value]="veiculo.status" [severity]="getSeverity(veiculo.status)" />
           </td>
           <td>
             <!-- botões de editar/deletar -->

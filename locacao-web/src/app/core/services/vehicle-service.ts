@@ -5,13 +5,19 @@ import { VehicleLookup } from '../models/vehicle-lookup.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { VehicleAdd } from '../models/vehicle_add.model';
+import { AuthService } from './auth';
+import { VehicleResponse } from '../models/vehicle-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class VehicleService {
 
   private http = inject(HttpClient)
 
+  private authService = inject(AuthService)
+
   private readonly apiUrl = environment.apiUrl;
+
+  private personId = this.authService.currentUser()?.personId;
 
   private vehicles: Vehicle[] = [
     {
@@ -32,12 +38,15 @@ export class VehicleService {
     return this.http.get<VehicleLookup>(`${this.apiUrl}/vehicles/${plate}`)
   }
 
-  getAll(): Observable<Vehicle[]> {
-    return of(this.vehicles);
-  }
+// vehicle.service.ts
+getAll(): Observable<VehicleResponse[]> {
+  const personId = this.authService.currentUser()?.personId;
+  if (!personId) return of([]);
+  return this.http.get<VehicleResponse[]>(`${this.apiUrl}/landlords/${personId}/vehicles`);
+}
 
-  addVehicle(data:VehicleAdd){
+  addVehicle(data: VehicleAdd) {
 
-    return this.http.post<string>(`${this.apiUrl}/vehicles`, data);
+    return this.http.post<string>(`${this.apiUrl}/landlords/${this.personId}/vehicles`, data);
   }
 }
