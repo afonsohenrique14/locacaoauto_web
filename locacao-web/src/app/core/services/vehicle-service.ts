@@ -38,15 +38,20 @@ export class VehicleService {
     return this.http.get<VehicleLookup>(`${this.apiUrl}/vehicles/${plate}`)
   }
 
-// vehicle.service.ts
-getAll(): Observable<VehicleResponse[]> {
-  const personId = this.authService.currentUser()?.personId;
-  if (!personId) return of([]);
-  return this.http.get<VehicleResponse[]>(`${this.apiUrl}/landlords/${personId}/vehicles`);
-}
+
+  getAll(): Observable<VehicleResponse[]> {
+    const personId = this.authService.currentUser()?.personId;
+    if (!personId) return of([]);
+    return this.http.get<VehicleResponse[]>(`${this.apiUrl}/landlords/${personId}/vehicles`);
+  }
 
   addVehicle(data: VehicleAdd) {
 
     return this.http.post<string>(`${this.apiUrl}/landlords/${this.personId}/vehicles`, data);
+  }
+
+  deleteVehichle(vehicleId: string){
+    console.log(`deletando ${vehicleId}`)
+    return this.http.delete<string>(`${this.apiUrl}/landlords/${this.personId}/vehicles/${vehicleId}`);
   }
 }

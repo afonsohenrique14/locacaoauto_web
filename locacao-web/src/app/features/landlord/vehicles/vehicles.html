@@ -34,7 +34,11 @@
             <p-tag [value]="veiculo.status" [severity]="getSeverity(veiculo.status)" />
           </td>
           <td>
-            <!-- botões de editar/deletar -->
+            <p-button
+              icon="pi pi-trash"
+              severity="danger"
+              (click)="deleteVehicle(veiculo.id)"
+            />
           </td>
         </tr>
       </ng-template>

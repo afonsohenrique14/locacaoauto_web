@@ -7,6 +7,7 @@ import { VehicleService } from '../../../core/services/vehicle-service';
 import { CardModule } from 'primeng/card';
 import { Router } from '@angular/router';
 import { VehicleResponse } from '../../../core/models/vehicle-response.model';
+import { NotificationService } from '../../../core/services/notification';
 
 @Component({
   selector: 'app-vehicles',
@@ -20,6 +21,7 @@ export class Vehicles {
   loading = signal(false)
   vehicleService = inject(VehicleService)
   router = inject(Router)
+  private notification = inject(NotificationService);
 
   ngOnInit() {
     this.carregar();
@@ -45,5 +47,12 @@ export class Vehicles {
       InMaintenance: 'warn',
     };
     return map[status];
+  }
+
+  deleteVehicle(id: string) {
+    this.vehicleService.deleteVehichle(id).subscribe({
+      next: () => this.carregar(),
+      error: (err) => this.notification.error(err.error || 'Erro ao excluir veículo.')
+    });
   }
 }
