@@ -1,1 +1,68 @@
-<p>rentals works!</p>
+<div class="rentals">
+  <p-card class="actions-rental">
+    <p-button
+      label="Adicionar Locação"
+      icon="pi pi-plus"
+      iconPos="right"
+      (click)="this.router.navigate(['app/landlord/rentals/rental-form'])"
+    ></p-button>
+  </p-card>
+  <p-card class="rental-card">
+    <p-table
+      [value]="rentals()"
+      [loading]="loading()"
+      [paginator]="true"
+      [rows]="10"
+      dataKey="id">
+
+      <ng-template #header>
+        <tr>
+          <th>Locatário</th>
+          <th>Placa</th>
+          <th>Data Inicial</th>
+          <th>Data Final</th>
+          <th>Status</th>
+          <th>Valor</th>
+          <th>Periodicidade</th>
+          <th>Ações</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-rental>
+        <tr>
+          <td>{{ rental.tenantName }}</td>
+          <td>{{ rental.vehiclePlate }}</td>
+          <td>{{ rental.startDate | date:'dd/MM/yyyy':'':'pt-BR'  }}</td>
+          <td>{{ rental.endDate  | date:'dd/MM/yyyy':'':'pt-BR' }} </td>
+          <td>
+            <p-tag [value]="rental.status" [severity]="this.rentalService.getRentalSeverity(rental.status)" />
+          </td>
+          <td>{{ rental.value }}</td>
+          <td>{{ rental.period }}</td>
+          <td>
+            <p-button
+              icon="pi pi-eye"
+              severity="primary"
+              [text]="true"
+              pTooltip="Ver detalhes"
+              tooltipPosition="top"
+              (click)="router.navigate(['/app/landlord/rentals', rental.id])"
+            />
+            <p-button
+              icon="pi pi-trash"
+              [text]="true"
+              severity="danger"
+              pTooltip="Encerrar Locação"
+              tooltipPosition="top"
+              (click)="EndRental(rental.id)"
+            />
+
+
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </p-card>
+  <p-confirmdialog />
+</div>

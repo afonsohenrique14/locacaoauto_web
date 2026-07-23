@@ -1,0 +1,124 @@
+<div class="rental-form">
+  <p-card class="rental-form-card">
+    <ng-template #header>
+      <div class="rental-form-header">
+        <h2 class="rental-form-title">Nova Locação</h2>
+        <p class="rental-form-subtitle">Preencha os dados para criar uma locação</p>
+      </div>
+    </ng-template>
+
+    <ng-template #content>
+      <form [formGroup]="rental_form">
+
+        <!-- se não tem tenant selecionado -->
+        <div class="tenant-search">
+          <span class="tenant-search-label">Locatário</span>
+          @if (!selectedTenant()) {
+            <p-button
+              label="Buscar / Adicionar Cliente"
+              icon="pi pi-search"
+              [outlined]="true"
+              (click)="onSearchTenant()"
+            />
+          } @else {
+            <div class="tenant-selected-info">
+              <i class="pi pi-user"></i>
+              <span class="tenant-name">{{ selectedTenant()!.name }}</span>
+              <p-button
+                icon="pi pi-times"
+                [text]="true"
+                severity="danger"
+                size="small"
+                pTooltip="Remover"
+                (click)="selectedTenant.set(null)"
+              />
+            </div>
+          }
+        </div>
+
+        <p-float-label variant="on">
+          <p-select
+            id="vehicleId"
+            formControlName="vehicleId"
+            [options]="vehicleOptions"
+            optionLabel="label"
+            optionValue="id"
+            [filter]="true"
+            filterBy="plate"
+            placeholder=" "
+          />
+          <label for="vehicleId">Veículo</label>
+        </p-float-label>
+
+        <div class="field-group">
+          <p-float-label variant="on">
+            <p-datepicker
+              id="startDate"
+              formControlName="startDate"
+              [showIcon]="true"
+              dateFormat="dd/mm/yy"
+            />
+            <label for="startDate">Data Inicial</label>
+          </p-float-label>
+
+          <p-float-label variant="on">
+            <p-datepicker
+              id="endDate"
+              formControlName="endDate"
+              [showIcon]="true"
+              dateFormat="dd/mm/yy"
+              [minDate]="rental_form.value.startDate"
+            />
+            <label for="endDate">Data Final</label>
+          </p-float-label>
+        </div>
+
+        <p-float-label variant="on">
+          <p-select
+            id="period"
+            formControlName="period"
+            [options]="periodOptions"
+            optionLabel="label"
+            optionValue="value"
+            placeholder=" "
+          />
+          <label for="period">Periodicidade</label>
+        </p-float-label>
+
+        <div class="field-group">
+          <p-float-label variant="on">
+            <p-inputnumber
+              id="value"
+              formControlName="value"
+              [useGrouping]="true"
+              [min]="0"
+              mode="currency"
+              currency="BRL"
+              locale="pt-BR"
+            />
+            <label for="value">Valor</label>
+          </p-float-label>
+
+          <p-float-label variant="on">
+            <p-inputnumber
+              id="deposit"
+              formControlName="deposit"
+              [useGrouping]="true"
+              [min]="0"
+              mode="currency"
+              currency="BRL"
+              locale="pt-BR"
+            />
+            <label for="deposit">Depósito</label>
+          </p-float-label>
+        </div>
+
+        <div class="actions">
+          <p-button label="Cancelar" [outlined]="true" icon="pi pi-times-circle" (click)="OnCancel()" />
+          <p-button label="Criar Locação" icon="pi pi-check" (click)="OnSubmit()" />
+        </div>
+
+      </form>
+    </ng-template>
+  </p-card>
+</div>

@@ -1,0 +1,268 @@
+<div class="person-form">
+  <p-card class="person-form-card">
+    <ng-template #header>
+      <div class="person-form-header">
+        <h2 class="person-form-title">Buscar / Cadastrar Cliente</h2>
+        <p class="person-form-subtitle">Informe o CPF ou CNPJ para buscar ou cadastrar um cliente</p>
+      </div>
+    </ng-template>
+
+    <ng-template #content>
+
+      <!-- BUSCA -->
+      <form [formGroup]="searchForm" class="search-form">
+        <div class="search-group">
+          <p-float-label variant="on">
+            <input
+              pInputText
+              id="document"
+              formControlName="document"
+              mask="000.000.000-00||00.000.000/0000-00"
+            />
+            <label for="document">CPF ou CNPJ</label>
+          </p-float-label>
+          <p-button
+            icon="pi pi-search"
+            [loading]="loading()"
+            [disabled]="loading() || !searchForm.valid"
+            (click)="onSearch()"
+            pTooltip="Buscar cliente"
+          />
+        </div>
+      </form>
+
+      <!-- CLIENTE ENCONTRADO -->
+      @if (personFound()) {
+        <div class="person-found">
+          <div class="person-found-header">
+            <i class="pi pi-check-circle person-found-icon"></i>
+            <span class="person-found-title">Cliente encontrado</span>
+          </div>
+          <div class="person-found-grid">
+            <div class="found-item">
+              <span class="found-label">Nome</span>
+              <span class="found-value">{{ personFound()!.data.name }}</span>
+            </div>
+            <div class="found-item">
+              <span class="found-label">{{ personFound()!.type === 'individual' ? 'CPF' : 'CNPJ' }}</span>
+              <span class="found-value">{{ maskDocument(personFound()!) }}</span>
+            </div>
+            <div class="found-item">
+              <span class="found-label">E-mail</span>
+              <span class="found-value">{{ maskEmail(personFound()!.data.email) }}</span>
+            </div>
+            <div class="found-item">
+              <span class="found-label">Telefone</span>
+              <span class="found-value">{{ maskPhone(personFound()!.data.phone) }}</span>
+            </div>
+            @if (personFound()!.type === 'legal') {
+              <div class="found-item">
+                <span class="found-label">Nome Fantasia</span>
+                <span class="found-value">{{ $any(personFound()!.data).tradeName }}</span>
+              </div>
+            }
+          </div>
+          <div class="found-actions">
+            <p-button
+              label="Usar este cliente"
+              icon="pi pi-check"
+              (click)="onUseExisting()"
+            />
+            <p-button
+              label="Buscar outro"
+              [outlined]="true"
+              icon="pi pi-refresh"
+              (click)="personFound.set(null)"
+            />
+          </div>
+        </div>
+      }
+
+      <!-- FORM PESSOA FÍSICA -->
+      @if (personType() === 'individual') {
+        <form [formGroup]="individualForm" class="register-form">
+          <h3 class="form-section-title">Dados Pessoais</h3>
+
+          <p-float-label variant="on">
+            <input pInputText id="ind-name" formControlName="name" />
+            <label for="ind-name">Nome completo</label>
+          </p-float-label>
+
+          <p-float-label variant="on">
+            <input pInputText id="ind-email" formControlName="email" />
+            <label for="ind-email">E-mail</label>
+          </p-float-label>
+
+          <p-float-label variant="on">
+            <input pInputText id="ind-phone" formControlName="phone" mask="(00) 00000-0000" />
+            <label for="ind-phone">Telefone</label>
+          </p-float-label>
+
+          <div class="field-group">
+            <p-float-label variant="on">
+              <input pInputText id="cpf" formControlName="cpf" mask="000.000.000-00" />
+              <label for="cpf">CPF</label>
+            </p-float-label>
+            <p-float-label variant="on">
+              <p-date-picker id="birthDate" formControlName="birthDate" [showIcon]="true" dateFormat="dd/mm/yy" />
+              <label for="birthDate">Data de nascimento</label>
+            </p-float-label>
+          </div>
+
+          <h3 class="form-section-title">CNH (opcional)</h3>
+
+          <div class="field-group">
+            <p-float-label variant="on">
+              <input pInputText id="licenseNumber" formControlName="licenseNumber" mask="00000000000" />
+              <label for="licenseNumber">Número da CNH</label>
+            </p-float-label>
+            <p-float-label variant="on">
+              <p-select
+                id="licenseCategory"
+                formControlName="licenseCategory"
+                [options]="licenseCategories"
+                optionLabel="label"
+                optionValue="value"
+              />
+              <label for="licenseCategory">Categoria</label>
+            </p-float-label>
+          </div>
+
+          <div class="field-group">
+            <p-float-label variant="on">
+              <p-date-picker id="licenseExpiry" formControlName="licenseExpiry" [showIcon]="true" dateFormat="dd/mm/yy" />
+              <label for="licenseExpiry">Validade da CNH</label>
+            </p-float-label>
+            <div class="field-checkbox">
+              <p-checkbox id="hasAtr" formControlName="hasAtr" [binary]="true" />
+              <label for="hasAtr">CNH tem ATR</label>
+            </div>
+          </div>
+
+          <h3 class="form-section-title">Endereço</h3>
+
+          <p-float-label variant="on">
+            <input pInputText id="ind-zipCode" formControlName="zipCode" mask="00000-000" (blur)="onFillZipCode('individual')" />
+            <label for="ind-zipCode">CEP</label>
+          </p-float-label>
+
+          <div class="field-group">
+            <p-float-label variant="on">
+              <input pInputText id="ind-street" formControlName="street" />
+              <label for="ind-street">Rua</label>
+            </p-float-label>
+            <p-float-label variant="on">
+              <input pInputText id="ind-number" formControlName="number" />
+              <label for="ind-number">Número</label>
+            </p-float-label>
+          </div>
+
+          <div class="field-group">
+            <p-float-label variant="on">
+              <input pInputText id="ind-neighborhood" formControlName="neighborhood" />
+              <label for="ind-neighborhood">Bairro</label>
+            </p-float-label>
+            <p-float-label variant="on">
+              <input pInputText id="ind-complement" formControlName="complement" />
+              <label for="ind-complement">Complemento</label>
+            </p-float-label>
+          </div>
+
+          <div class="field-group">
+            <p-float-label variant="on">
+              <input pInputText id="ind-city" formControlName="city" />
+              <label for="ind-city">Cidade</label>
+            </p-float-label>
+            <p-float-label variant="on">
+              <input pInputText id="ind-state" formControlName="state" />
+              <label for="ind-state">Estado</label>
+            </p-float-label>
+          </div>
+
+          <div class="actions">
+            <p-button label="Cancelar" [outlined]="true" icon="pi pi-times-circle" (click)="onCancel()" />
+            <p-button label="Cadastrar Cliente" icon="pi pi-check" (click)="onSubmitIndividual()" />
+          </div>
+        </form>
+      }
+
+      <!-- FORM PESSOA JURÍDICA -->
+      @if (personType() === 'legal') {
+        <form [formGroup]="legalForm" class="register-form">
+          <h3 class="form-section-title">Dados da Empresa</h3>
+
+          <p-float-label variant="on">
+            <input pInputText id="leg-name" formControlName="name" />
+            <label for="leg-name">Razão Social</label>
+          </p-float-label>
+
+          <p-float-label variant="on">
+            <input pInputText id="leg-tradeName" formControlName="tradeName" />
+            <label for="leg-tradeName">Nome Fantasia</label>
+          </p-float-label>
+
+          <p-float-label variant="on">
+            <input pInputText id="leg-email" formControlName="email" />
+            <label for="leg-email">E-mail</label>
+          </p-float-label>
+
+          <p-float-label variant="on">
+            <input pInputText id="leg-phone" formControlName="phone" mask="(00) 00000-0000" />
+            <label for="leg-phone">Telefone</label>
+          </p-float-label>
+
+          <p-float-label variant="on">
+            <input pInputText id="cnpj" formControlName="cnpj" mask="00.000.000/0000-00" />
+            <label for="cnpj">CNPJ</label>
+          </p-float-label>
+
+          <h3 class="form-section-title">Endereço</h3>
+
+          <p-float-label variant="on">
+            <input pInputText id="leg-zipCode" formControlName="zipCode" mask="00000-000" (blur)="onFillZipCode('legal')" />
+            <label for="leg-zipCode">CEP</label>
+          </p-float-label>
+
+          <div class="field-group">
+            <p-float-label variant="on">
+              <input pInputText id="leg-street" formControlName="street" />
+              <label for="leg-street">Rua</label>
+            </p-float-label>
+            <p-float-label variant="on">
+              <input pInputText id="leg-number" formControlName="number" />
+              <label for="leg-number">Número</label>
+            </p-float-label>
+          </div>
+
+          <div class="field-group">
+            <p-float-label variant="on">
+              <input pInputText id="leg-neighborhood" formControlName="neighborhood" />
+              <label for="leg-neighborhood">Bairro</label>
+            </p-float-label>
+            <p-float-label variant="on">
+              <input pInputText id="leg-complement" formControlName="complement" />
+              <label for="leg-complement">Complemento</label>
+            </p-float-label>
+          </div>
+
+          <div class="field-group">
+            <p-float-label variant="on">
+              <input pInputText id="leg-city" formControlName="city" />
+              <label for="leg-city">Cidade</label>
+            </p-float-label>
+            <p-float-label variant="on">
+              <input pInputText id="leg-state" formControlName="state" />
+              <label for="leg-state">Estado</label>
+            </p-float-label>
+          </div>
+
+          <div class="actions">
+            <p-button label="Cancelar" [outlined]="true" icon="pi pi-times-circle" (click)="onCancel()" />
+            <p-button label="Cadastrar Cliente" icon="pi pi-check" (click)="onSubmitLegal()" />
+          </div>
+        </form>
+      }
+
+    </ng-template>
+  </p-card>
+</div>

@@ -62,16 +62,32 @@ export const routes: Routes = [
         loadComponent: () => import('./features/landlord/vehicles/vehicles').then(m => m.Vehicles),
       },
       {
-        path: 'landlord/vehicles/:id',
-        loadComponent: () =>import('./features/landlord/vehicles/vehicle-details/vehicle-details').then(m => m.VehicleDetails)
-      },
-      {
         path: 'landlord/vehicles/vehicle-form',
         loadComponent: () => import('./features/landlord/vehicles/vehicle-form/vehicle-form').then(m => m.VehicleForm),
       },
       {
+        path: 'landlord/vehicles/:id',
+        loadComponent: () =>import('./features/landlord/vehicles/vehicle-details/vehicle-details').then(m => m.VehicleDetails)
+      },
+      // {
+      // path: 'landlord/persons',
+      //   loadComponent: () => import('./features/landlord/persons/persons').then(m => m.Persons)
+      // },
+      {
+        path: 'landlord/persons/person-form',
+        loadComponent: () => import('./features/landlord/persons/person-form/person-form').then(m => m.PersonForm)
+      },
+      {
         path: 'landlord/rentals',
         loadComponent: () => import('./features/landlord/rentals/rentals').then(m => m.Rentals)
+      },
+      {
+      path: 'landlord/rentals/rental-form',
+        loadComponent: () => import('./features/landlord/rentals/rental-form/rental-form').then(m => m.RentalForm)
+      },
+      {
+        path: 'landlord/rentals/:id',
+        loadComponent: () => import('./features/landlord/rentals/rental-details/rental-details').then(m => m.RentalDetails)
       },
       {
         path: 'tenant',

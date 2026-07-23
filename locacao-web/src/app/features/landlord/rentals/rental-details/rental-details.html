@@ -1,0 +1,125 @@
+<div class="rental-details">
+  @if (loading()) {
+    <div class="loading">
+      <p-progressspinner />
+    </div>
+  } @else if (rental()) {
+    <p-card class="rental-details-card">
+
+      <ng-template #header>
+        <div class="rental-details-header">
+          <div class="rental-details-title-group">
+            <h2 class="rental-details-title">Locação</h2>
+            <p-tag
+              [value]="rental()!.status"
+              [severity]="getSeverity(rental()!.status)"
+            />
+          </div>
+          <p class="rental-details-subtitle">{{ rental()!.startDate | date:'dd/MM/yyyy':'':'pt-BR' }} — {{ rental()!.endDate | date:'dd/MM/yyyy':'':'pt-BR' }}</p>
+        </div>
+      </ng-template>
+
+      <ng-template #content>
+
+        <!-- VALORES -->
+        <div class="rental-details-grid">
+          <div class="detail-item">
+            <span class="detail-label">Valor</span>
+            <span class="detail-value">{{ rental()!.value | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Depósito</span>
+            <span class="detail-value">{{ rental()!.deposit | currency:'BRL':'symbol':'1.2-2':'pt-BR' }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Periodicidade</span>
+            <span class="detail-value">{{ rental()!.period }}</span>
+          </div>
+        </div>
+
+        <p-divider />
+
+        <!-- LOCATÁRIO -->
+        <h3 class="section-title">Locatário</h3>
+        <div class="rental-details-grid">
+          <div class="detail-item">
+            <span class="detail-label">Nome</span>
+            <span class="detail-value">{{ rental()!.tenant.name }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">E-mail</span>
+            <span class="detail-value">{{ rental()!.tenant.email }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Telefone</span>
+            <span class="detail-value">{{ rental()!.tenant.phone }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Endereço</span>
+            <span class="detail-value">
+              {{ rental()!.tenant.address.street }}, {{ rental()!.tenant.address.number }} —
+              {{ rental()!.tenant.address.city }}/{{ rental()!.tenant.address.state }}
+            </span>
+          </div>
+        </div>
+
+        <p-divider />
+
+        <!-- VEÍCULO -->
+        <h3 class="section-title">Veículo</h3>
+        <div class="rental-details-grid">
+          <div class="detail-item">
+            <span class="detail-label">Placa</span>
+            <span class="detail-value">{{ rental()!.vehicle.plate }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Marca / Modelo</span>
+            <span class="detail-value">{{ rental()!.vehicle.brand }} {{ rental()!.vehicle.model }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Ano Fabricação / Modelo</span>
+            <span class="detail-value">{{ rental()!.vehicle.manufactureYear }} / {{ rental()!.vehicle.modelYear }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Quilometragem</span>
+            <span class="detail-value">{{ rental()!.vehicle.mileage | number:'1.0-0':'pt-BR' }} km</span>
+          </div>
+        </div>
+
+        <p-divider />
+
+        <!-- LOCADOR -->
+        <h3 class="section-title">Locador</h3>
+        <div class="rental-details-grid">
+          <div class="detail-item">
+            <span class="detail-label">Nome</span>
+            <span class="detail-value">{{ rental()!.landLord.name }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">E-mail</span>
+            <span class="detail-value">{{ rental()!.landLord.email }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Telefone</span>
+            <span class="detail-value">{{ rental()!.landLord.phone }}</span>
+          </div>
+        </div>
+
+        <div class="rental-details-actions">
+          <p-button
+            label="Voltar"
+            icon="pi pi-arrow-left"
+            [outlined]="true"
+            (click)="onBack()"
+          />
+        </div>
+
+      </ng-template>
+    </p-card>
+  } @else {
+    <div class="not-found">
+      <p>Locação não encontrada.</p>
+      <p-button label="Voltar" icon="pi pi-arrow-left" [outlined]="true" (click)="onBack()" />
+    </div>
+  }
+</div>

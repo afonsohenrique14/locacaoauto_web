@@ -11,28 +11,14 @@ import { VehicleResponse } from '../models/vehicle-response.model';
 @Injectable({ providedIn: 'root' })
 export class VehicleService {
 
-  private http = inject(HttpClient)
+  private http = inject(HttpClient);
 
-  private authService = inject(AuthService)
+  private authService = inject(AuthService);
 
   private readonly apiUrl = environment.apiUrl;
 
-  private personId = this.authService.currentUser()?.personId;
 
-  private vehicles: Vehicle[] = [
-    {
-      id: '1',
-      brand: 'Toyota',
-      model: 'Corolla',
-      modelYear: 2023,
-      manufactureYear: 2022,
-      license: { value: 'ABC1D23', isMercosul: true },
-      renavam: '12345678901',
-      mileage: 15000,
-      vehicleStatus: VEICULO_STATUS.Available
-    }
-    // mais um ou dois pra ter dados na tela
-  ];
+
 
   FindDataVehicle(plate: string){
     return this.http.get<VehicleLookup>(`${this.apiUrl}/vehicles/${plate}`)
@@ -46,13 +32,13 @@ export class VehicleService {
   }
 
   addVehicle(data: VehicleAdd) {
-
-    return this.http.post<string>(`${this.apiUrl}/landlords/${this.personId}/vehicles`, data);
+    const personId = this.authService.currentUser()?.personId;
+    return this.http.post<string>(`${this.apiUrl}/landlords/${personId}/vehicles`, data);
   }
 
   deleteVehichle(vehicleId: string){
-    console.log(`deletando ${vehicleId}`)
-    return this.http.delete<string>(`${this.apiUrl}/landlords/${this.personId}/vehicles/${vehicleId}`);
+    const personId = this.authService.currentUser()?.personId;
+    return this.http.delete<string>(`${this.apiUrl}/landlords/${personId}/vehicles/${vehicleId}`);
   }
 
   getById(id: string): Observable<VehicleResponse> {
