@@ -62,6 +62,10 @@ export const routes: Routes = [
         loadComponent: () => import('./features/landlord/vehicles/vehicles').then(m => m.Vehicles),
       },
       {
+        path: 'landlord/vehicles/:id',
+        loadComponent: () =>import('./features/landlord/vehicles/vehicle-details/vehicle-details').then(m => m.VehicleDetails)
+      },
+      {
         path: 'landlord/vehicles/vehicle-form',
         loadComponent: () => import('./features/landlord/vehicles/vehicle-form/vehicle-form').then(m => m.VehicleForm),
       },

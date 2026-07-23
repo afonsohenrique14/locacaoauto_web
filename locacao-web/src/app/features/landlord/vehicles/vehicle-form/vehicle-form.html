@@ -12,13 +12,16 @@
 
         <div class="field-group">
           <p-float-label variant="on">
-            <input pInputText id="license" formControlName="license" (blur)="OnfillPlate()" />
+            <input pInputText id="license" formControlName="license" />
             <label for="license">Placa</label>
           </p-float-label>
-          <div class="field-checkbox">
-            <p-checkbox id="isMercosul" formControlName="isMercosul" [binary]="true" />
-            <label for="isMercosul">Placa Mercosul</label>
-          </div>
+          <p-button
+            icon="pi pi-search"
+            [loading]="loadingPlate()"
+            [disabled]="loadingPlate()"
+            (click)="OnfillPlate()"
+            pTooltip="Buscar dados do veículo"
+          />
         </div>
 
         <p-float-label variant="on">
@@ -51,12 +54,14 @@
           <p-inputnumber id="mileage" formControlName="mileage" [useGrouping]="true" [min]="0" suffix=" km" />
           <label for="mileage">Quilometragem</label>
         </p-float-label>
+
         <div class="actions">
-            <p-button label="Cancelar" [outlined]="true" icon="pi pi-times-circle" (click)="OnCancel()" />
-            <p-button label="Adicionar" icon="pi pi-check" (click)="OnSubmit()" />
+          <p-button label="Cancelar" [outlined]="true" icon="pi pi-times-circle" severity="danger" (click)="OnCancel()" />
+          <p-button label="Adicionar" icon="pi pi-check" severity="primary" (click)="OnSubmit()" />
         </div>
 
       </form>
     </ng-template>
   </p-card>
+
 </div>

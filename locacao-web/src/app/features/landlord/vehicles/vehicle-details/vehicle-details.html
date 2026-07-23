@@ -1,0 +1,103 @@
+<div class="vehicle-details">
+  @if (loading()) {
+    <div class="loading">
+      <p-progressspinner />
+    </div>
+  } @else if (vehicle()) {
+    <p-card class="vehicle-details-card">
+      <ng-template #header>
+        <div class="vehicle-details-header">
+          <div class="vehicle-details-title-group">
+            <h2 class="vehicle-details-title">{{ vehicle()!.brand }} {{ vehicle()!.model }}</h2>
+            @if (editingStatus()) {
+              <div class="detail-edit">
+                <p-select
+                  [ngModel]="newStatus()"
+                  (ngModelChange)="newStatus.set($event)"
+                  [options]="statusOptions"
+                  optionLabel="label"
+                  optionValue="value"
+                />
+                <p-button icon="pi pi-check" severity="success" (click)="saveStatus()" />
+                <p-button icon="pi pi-times" severity="secondary" (click)="editingStatus.set(false)" />
+              </div>
+            } @else {
+              <p-tag [value]="vehicle()!.status" [severity]="getSeverity(vehicle()!.status!)" />
+              <p-button
+                icon="pi pi-sync"
+                [text]="true"
+                size="small"
+                pTooltip="Alterar status"
+                (click)="onEditStatus()"
+              />
+            }
+          </div>
+          <p class="vehicle-details-plate">{{ vehicle()!.plate }}</p>
+        </div>
+      </ng-template>
+
+      <ng-template #content>
+        <div class="vehicle-details-grid">
+
+          <div class="detail-item">
+            <span class="detail-label">Marca</span>
+            <span class="detail-value">{{ vehicle()!.brand }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Modelo</span>
+            <span class="detail-value">{{ vehicle()!.model }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Ano Fabricação</span>
+            <span class="detail-value">{{ vehicle()!.manufactureYear }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Ano Modelo</span>
+            <span class="detail-value">{{ vehicle()!.modelYear }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Renavam</span>
+            <span class="detail-value">{{ vehicle()!.renavam }}</span>
+          </div>
+
+          <div class="detail-item">
+            <span class="detail-label">Quilometragem</span>
+            @if (editingMileage()) {
+              <div class="detail-edit">
+                <p-inputnumber
+                  [ngModel]="newMileage()"
+                  (ngModelChange)="newMileage.set($event)"
+                  [useGrouping]="true"
+                  [min]=0
+                  suffix=" km"
+                />
+                <p-button icon="pi pi-check" severity="success" (click)="saveMileage()" />
+                <p-button icon="pi pi-times" severity="secondary" (click)="editingMileage.set(false)" />
+              </div>
+            } @else {
+              <div class="detail-value-row">
+                <span class="detail-value">{{ vehicle()!.mileage | number:'1.0-0' }} km</span>
+                <p-button
+                  icon="pi pi-pencil"
+                  [text]="true"
+                  size="small"
+                  pTooltip="Editar quilometragem"
+                  (click)="onEditMileage()"
+                />
+              </div>
+            }
+          </div>
+
+        </div>
+      </ng-template>
+    </p-card>
+  } @else {
+    <div class="not-found">
+      <p>Veículo não encontrado.</p>
+    </div>
+  }
+</div>

@@ -18,7 +18,8 @@
       <ng-template #header>
         <tr>
           <th>Placa</th>
-          <th>Marca/Modelo</th>
+          <th>Marca</th>
+          <th>Modelo</th>
           <th>Ano</th>
           <th>Status</th>
           <th>Ações</th>
@@ -28,21 +29,35 @@
       <ng-template #body let-veiculo>
         <tr>
           <td>{{ veiculo.plate }}</td>
-          <td>{{ veiculo.brand }} {{ veiculo.model }}</td>
+          <td>{{ veiculo.brand }}</td>
+          <td>{{ veiculo.model }}</td>
           <td>{{ veiculo.manufactureYear }} / {{ veiculo.modelYear }}</td>
           <td>
-            <p-tag [value]="veiculo.status" [severity]="getSeverity(veiculo.status)" />
+            <p-tag [value]="veiculo.status" [severity]="this.vehicleService.getSeverity(veiculo.status)" />
           </td>
           <td>
             <p-button
+              icon="pi pi-eye"
+              severity="primary"
+              [text]="true"
+              pTooltip="Ver detalhes"
+              tooltipPosition="top"
+              (click)="router.navigate(['/app/landlord/vehicles', veiculo.id])"
+            />
+            <p-button
               icon="pi pi-trash"
+              [text]="true"
               severity="danger"
+              pTooltip="Excluir Veículo"
+              tooltipPosition="top"
               (click)="deleteVehicle(veiculo.id)"
             />
+
           </td>
         </tr>
       </ng-template>
 
     </p-table>
   </p-card>
+  <p-confirmdialog />
 </div>

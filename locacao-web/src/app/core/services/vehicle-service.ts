@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Vehicle, VEICULO_STATUS } from '../models/vehicle.model';
+import { Vehicle, VEICULO_STATUS, VeiculoStatus } from '../models/vehicle.model';
 import { VehicleLookup } from '../models/vehicle-lookup.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
@@ -53,5 +53,23 @@ export class VehicleService {
   deleteVehichle(vehicleId: string){
     console.log(`deletando ${vehicleId}`)
     return this.http.delete<string>(`${this.apiUrl}/landlords/${this.personId}/vehicles/${vehicleId}`);
+  }
+
+  getById(id: string): Observable<VehicleResponse> {
+    return this.http.get<VehicleResponse>(`${this.apiUrl}/vehicles/${id}`);
+  }
+
+  getSeverity(status: VeiculoStatus): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
+    const map: Record<VeiculoStatus, 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast'> = {
+      Available: 'success',
+      Rented: 'info',
+      InMaintenance: 'warn',
+    };
+    return map[status];
+  }
+
+  updateVehicle(id: string, data: { mileage?: number; status?: VeiculoStatus }) {
+    const personId = this.authService.currentUser()?.personId;
+    return this.http.patch<void>(`${this.apiUrl}/landlords/${personId}/vehicles/${id}`, data);
   }
 }

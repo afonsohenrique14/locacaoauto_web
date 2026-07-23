@@ -2,16 +2,20 @@ import { Component, inject, signal } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { Vehicle, VeiculoStatus } from '../../../core/models/vehicle.model';
+import { VeiculoStatus } from '../../../core/models/vehicle.model';
 import { VehicleService } from '../../../core/services/vehicle-service';
 import { CardModule } from 'primeng/card';
 import { Router } from '@angular/router';
 import { VehicleResponse } from '../../../core/models/vehicle-response.model';
 import { NotificationService } from '../../../core/services/notification';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Tooltip } from "primeng/tooltip";
+
 
 @Component({
   selector: 'app-vehicles',
-  imports: [TableModule, ButtonModule, TagModule, CardModule],
+  imports: [TableModule, ButtonModule, TagModule, CardModule, ConfirmDialog, Tooltip],
   templateUrl: './vehicles.html',
   styleUrl: './vehicles.scss',
 })
@@ -22,6 +26,8 @@ export class Vehicles {
   vehicleService = inject(VehicleService)
   router = inject(Router)
   private notification = inject(NotificationService);
+  private confirmationService = inject(ConfirmationService);
+
 
   ngOnInit() {
     this.carregar();
@@ -40,19 +46,25 @@ export class Vehicles {
     });
   }
 
-  getSeverity(status: VeiculoStatus): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' {
-    const map: Record<VeiculoStatus, 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast'> = {
-      Available: 'success',
-      Rented: 'info',
-      InMaintenance: 'warn',
-    };
-    return map[status];
-  }
+
 
   deleteVehicle(id: string) {
-    this.vehicleService.deleteVehichle(id).subscribe({
-      next: () => this.carregar(),
-      error: (err) => this.notification.error(err.error || 'Erro ao excluir veículo.')
+    this.confirmationService.confirm({
+      message: 'Tem certeza que deseja excluir este veículo?',
+      header: 'Confirmar Exclusão',
+      icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Sim, excluir',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: 'p-button-danger',
+      accept: () => {
+        this.vehicleService.deleteVehichle(id).subscribe({
+          next: () => {
+            this.notification.success('Veículo excluído com sucesso.');
+            this.carregar();
+          },
+          error: (err) => this.notification.error(err.error || 'Erro ao excluir veículo.')
+        });
+      }
     });
   }
 }
